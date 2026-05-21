@@ -154,7 +154,7 @@ function updateAuthUI(user) {
       // Restaurar links de login y registro
       if (authPlaceholder) {
         authPlaceholder.innerHTML = `
-          <li><a href="login.html" class="nav-cta">Iniciar Sesión</a></li>
+          <li><a href="${_p('login.html')}" class="nav-cta">Iniciar Sesión</a></li>
         `;
       }
       

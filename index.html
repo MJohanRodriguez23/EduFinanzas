@@ -44,24 +44,7 @@
       overflow-x: hidden;
     }
 
-    /* === CURSOR === */
-    .cursor {
-      width: 12px; height: 12px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none; z-index: 9999;
-      transition: transform 0.15s ease;
-      mix-blend-mode: difference;
-    }
-    .cursor-ring {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(201,168,76,0.5);
-      border-radius: 50%;
-      position: fixed; top: 0; left: 0;
-      pointer-events: none; z-index: 9998;
-      transition: all 0.3s ease;
-    }
+
 
     /* === GRAIN OVERLAY === */
     body::before {
@@ -716,7 +699,15 @@
     }
     @media (max-width: 768px) {
       nav { padding: 16px 24px; }
-      .nav-links { display: none; }
+      .nav-links { display: none !important; }
+      .nav-links.open {
+        display: flex !important; flex-direction: column;
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(10,10,15,0.98); padding: 24px;
+        border-bottom: 1px solid rgba(201,168,76,0.1);
+        gap: 16px; z-index: 999;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      }
       .mobile-menu-btn { display: block; }
       section { padding: 64px 24px; }
       .hero { padding: 100px 24px 64px; }
@@ -743,10 +734,6 @@
 </head>
 <body>
 
-  <!-- Cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-
   <!-- Scroll progress -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
@@ -756,7 +743,7 @@
       <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
       Edu<span class="logo-dot">Finanzas</span>
     </a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="html/cursos.html">Cursos</a></li>
       <li><a href="html/juegos.html">Juegos</a></li>
       <li><a href="html/informacion.html">Recursos</a></li>
@@ -765,7 +752,7 @@
       <!-- Menú dinámico de autenticación -->
       <li id="auth-menu-placeholder"></li>
     </ul>
-    <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+    <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')"><i class="fas fa-bars"></i></button>
   </nav>
 
   <!-- HERO -->
@@ -1181,16 +1168,6 @@
   </footer>
 
   <script>
-    // === CURSOR ===
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX - 6 + 'px';
-      cursor.style.top = e.clientY - 6 + 'px';
-      ring.style.left = e.clientX - 18 + 'px';
-      ring.style.top = e.clientY - 18 + 'px';
-    });
-
     // === SCROLL PROGRESS ===
     window.addEventListener('scroll', () => {
       const pct = (scrollY / (document.body.scrollHeight - innerHeight)) * 100;
