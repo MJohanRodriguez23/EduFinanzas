@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulos — EduFinanzas</title>
+  <link rel="icon" href="../img/EduFinanzas.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/firebase-auth-styles.css" />
+  
+  <!-- Firebase SDK v9 Compatible -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  
+  <!-- Firebase Auth Global -->
+  <script src="../js/firebase-auth-global.js"></script>
+</head>
+<body>
+
+  <nav class="ef-nav" id="navbar">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+      Edu<span class="logo-dot">Finanzas</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="cursos.html" class="active">Cursos</a></li>
+      <li><a href="juegos.html" class="">Juegos</a></li>
+      <li><a href="informacion.html" class="">Recursos</a></li>
+      <li><a href="comunidad.html" class="">Comunidad</a></li>
+      <li><a href="wallet.html" class="">Mi Wallet</a></li>
+      <!-- Menú dinámico de autenticación -->
+      <li id="auth-menu-placeholder"></li>
+    </ul>
+    <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+<main class="page">
+  <header class="page-header reveal">
+    <div class="section-label">Curso en progreso</div>
+    <h1>Inversiones <span class="gold">Básicas</span></h1>
+    <p>Domina los fundamentos de la inversión paso a paso, desde tipos de activos hasta gestión de riesgo y planificación financiera.</p>
+  </header>
+
+  <div class="grid-3 reveal">
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-clock"></i></div><div class="stat-value">10h</div><div class="stat-label">Duración total</div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-list"></i></div><div class="stat-value">15</div><div class="stat-label">Lecciones</div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-value">30%</div><div class="stat-label">Completado</div><div class="progress-track" style="margin-top:8px"><div class="progress-fill" style="width:30%"></div></div></div>
+  </div>
+
+  <section class="section-block" style="margin-top:48px" id="modules"></section>
+</main>
+
+  <footer class="ef-footer">
+    <div class="footer-grid">
+      <div>
+        <a href="../index.html" class="footer-logo">
+          <div class="logo-icon" style="width:32px;height:32px;font-size:0.8rem"><i class="fas fa-chart-line"></i></div>
+          EduFinanzas
+        </a>
+        <p class="footer-desc">Tu mejor aliado para la educación financiera. Aprende, crece y domina tu dinero.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Plataforma</h5>
+        <ul>
+          <li><a href="cursos.html">Cursos</a></li>
+          <li><a href="juegos.html">Juegos</a></li>
+          <li><a href="wallet.html">Mi Wallet</a></li>
+          <li><a href="metas.html">Metas</a></li>
+          <li><a href="comunidad.html">Comunidad</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Recursos</h5>
+        <ul>
+          <li><a href="informacion.html">Blog Financiero</a></li>
+          <li><a href="ayuda.html">Centro de Ayuda</a></li>
+          <li><a href="calendario.html">Calendario</a></li>
+          <li><a href="miProgreso.html">Mi Progreso</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="mailto:info@edufinanzas.com"><i class="fas fa-envelope" style="margin-right:8px"></i>info@edufinanzas.com</a></li>
+          <li><a href="tel:+57123456789"><i class="fas fa-phone" style="margin-right:8px"></i>+57 123 456 789</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 EduFinanzas. Todos los derechos reservados.</p>
+      <p>Hecho con <span style="color:var(--gold)">♥</span> en Colombia</p>
+    </div>
+  </footer>
+
+<script>
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar')?.classList.toggle('scrolled', scrollY > 30);
+  });
+  // Reveal on scroll
+  const _obs = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => _obs.observe(el));
+  // Toast helper
+  window.efToast = function(msg, type='info'){
+    let t = document.getElementById('efToast');
+    if(!t){ t=document.createElement('div'); t.id='efToast'; t.className='ef-toast'; t.innerHTML='<i class="fas fa-info-circle"></i><span></span>'; document.body.appendChild(t);}
+    t.className='ef-toast '+type+' show';
+    t.querySelector('i').className = type==='success'?'fas fa-check-circle':type==='error'?'fas fa-exclamation-circle':'fas fa-info-circle';
+    t.querySelector('span').textContent=msg;
+    clearTimeout(window._toastT);
+    window._toastT=setTimeout(()=>t.classList.remove('show'), 3500);
+  };
+  // Modal helper
+  window.efModalOpen = id => document.getElementById(id)?.classList.add('show');
+  window.efModalClose = id => document.getElementById(id)?.classList.remove('show');
+  document.querySelectorAll('.ef-modal-backdrop').forEach(b => b.addEventListener('click', e => { if(e.target===b) b.classList.remove('show'); }));
+</script>
+
+<script>
+const modules = [
+  {n:1, t:'Introducción a las Inversiones', lessons:[{t:'¿Qué es invertir?', d:'20 min'}, {t:'Tipos de inversiones', d:'30 min'}, {t:'Perfil del inversor', d:'25 min'}]},
+  {n:2, t:'Instrumentos de Inversión', lessons:[{t:'Acciones', d:'35 min'}, {t:'Bonos', d:'30 min'}, {t:'Fondos indexados', d:'28 min'}, {t:'ETFs', d:'25 min'}]},
+  {n:3, t:'Estrategias de Inversión', lessons:[{t:'Análisis Fundamental', d:'45 min'}, {t:'Análisis Técnico', d:'40 min'}, {t:'Diversificación', d:'35 min'}]},
+  {n:4, t:'Gestión de Riesgos', lessons:[{t:'Identificación de Riesgos', d:'30 min'}, {t:'Estrategias de Mitigación', d:'35 min'}, {t:'Control y Seguimiento', d:'25 min'}]},
+  {n:5, t:'Planificación Financiera', lessons:[{t:'Objetivos Financieros', d:'30 min'}, {t:'Plan de Inversión Personal', d:'40 min'}, {t:'Seguimiento y Ajustes', d:'35 min'}]},
+];
+const wrap = document.getElementById('modules');
+modules.forEach((m,i)=>{
+  const card = document.createElement('div');
+  card.className='ef-card reveal';
+  card.style.marginBottom='16px';
+  card.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="this.parentElement.querySelector('.les').classList.toggle('hidden')">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="card-icon" style="margin:0;width:44px;height:44px;font-size:1rem">${m.n}</div>
+        <div>
+          <div class="badge-gold">Módulo ${m.n}</div>
+          <h3 style="margin-top:8px">${m.t}</h3>
+          <p style="margin-top:4px">${m.lessons.length} lecciones</p>
+        </div>
+      </div>
+      <i class="fas fa-chevron-down" style="color:var(--gold)"></i>
+    </div>
+    <ul class="ef-list les hidden" style="margin-top:20px">
+      ${m.lessons.map(l=>`<li><i class="fas fa-play-circle"></i><span style="flex:1">${l.t}</span><span style="color:var(--text-muted);font-size:0.82rem">${l.d}</span></li>`).join('')}
+    </ul>
+  `;
+  wrap.appendChild(card);
+});
+const s = document.createElement('style'); s.textContent='.hidden{display:none}'; document.head.appendChild(s);
+document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+</script>
+
+</body></html>

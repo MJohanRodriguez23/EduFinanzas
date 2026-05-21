@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cursos — EduFinanzas</title>
+  <link rel="icon" href="../img/EduFinanzas.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/firebase-auth-styles.css" />
+  
+  <!-- Firebase SDK v9 Compatible -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  
+  <!-- Firebase Auth Global -->
+  <script src="../js/firebase-auth-global.js"></script>
+</head>
+<body>
+
+  <nav class="ef-nav" id="navbar">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+      Edu<span class="logo-dot">Finanzas</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="cursos.html" class="active">Cursos</a></li>
+      <li><a href="juegos.html" class="">Juegos</a></li>
+      <li><a href="informacion.html" class="">Recursos</a></li>
+      <li><a href="comunidad.html" class="">Comunidad</a></li>
+      <li><a href="wallet.html" class="">Mi Wallet</a></li>
+      <!-- Menú dinámico de autenticación -->
+      <li id="auth-menu-placeholder"></li>
+    </ul>
+    <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+<main class="page">
+  <header class="page-header reveal">
+    <div class="section-label">Aprende a tu ritmo</div>
+    <h1>Construye tu <span class="gold">futuro financiero</span></h1>
+    <p>Domina las habilidades financieras esenciales con expertos de la industria y únete a una comunidad de más de 10,000 estudiantes activos.</p>
+    <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap">
+      <a href="#cursos" class="btn-primary-gold">Comenzar Ahora <i class="fas fa-arrow-right"></i></a>
+      <a href="https://www.youtube.com/watch?v=X38MGyuc0ds" target="_blank" class="btn-ghost"><i class="fas fa-play"></i> Ver Demo</a>
+    </div>
+  </header>
+
+  <section class="section-block">
+    <div class="grid-4">
+      <div class="stat-card reveal reveal-delay-1"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-value">10K+</div><div class="stat-label">Estudiantes activos</div></div>
+      <div class="stat-card reveal reveal-delay-2"><div class="stat-icon"><i class="fas fa-star"></i></div><div class="stat-value">95%</div><div class="stat-label">Tasa de satisfacción</div></div>
+      <div class="stat-card reveal reveal-delay-3"><div class="stat-icon"><i class="fas fa-graduation-cap"></i></div><div class="stat-value">50+</div><div class="stat-label">Cursos especializados</div></div>
+      <div class="stat-card reveal reveal-delay-4"><div class="stat-icon"><i class="fas fa-user-tie"></i></div><div class="stat-value">15+</div><div class="stat-label">Expertos instructores</div></div>
+    </div>
+  </section>
+
+  <section class="section-block" id="cursos">
+    <div class="section-label reveal">Cursos Gratuitos</div>
+    <h2 class="section-title reveal">Comienza tu viaje financiero</h2>
+    <p class="section-desc reveal">Explora nuestros cursos gratuitos para adquirir conocimientos financieros básicos antes de avanzar a programas más especializados.</p>
+
+    <div class="grid-3">
+      <div class="ef-card reveal reveal-delay-1">
+        <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
+        <span class="badge-green">Gratis</span>
+        <h3 style="margin-top:14px">Fundamentos Financieros</h3>
+        <p>Aprende los conceptos básicos de las finanzas personales y la importancia del ahorro.</p>
+        <ul class="ef-list" style="margin:16px 0">
+          <li><i class="fas fa-check"></i>5 lecciones introductorias</li>
+          <li><i class="fas fa-clock"></i>2 horas de contenido</li>
+          <li><i class="fas fa-download"></i>Recursos descargables</li>
+        </ul>
+        <a href="registro-modulos.html" class="btn-primary-gold" style="width:100%;justify-content:center">Comenzar Gratis</a>
+      </div>
+      <div class="ef-card reveal reveal-delay-2">
+        <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
+        <span class="badge-green">Gratis</span>
+        <h3 style="margin-top:14px">Presupuesto Básico</h3>
+        <p>Descubre cómo crear y mantener un presupuesto efectivo para tus finanzas personales.</p>
+        <ul class="ef-list" style="margin:16px 0">
+          <li><i class="fas fa-check"></i>4 lecciones prácticas</li>
+          <li><i class="fas fa-clock"></i>1.5 horas de contenido</li>
+          <li><i class="fas fa-file-alt"></i>Plantilla de presupuesto</li>
+        </ul>
+        <a href="registro-modulos.html" class="btn-primary-gold" style="width:100%;justify-content:center">Comenzar Gratis</a>
+      </div>
+      <div class="ef-card reveal reveal-delay-3">
+        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+        <span class="badge-green">Gratis</span>
+        <h3 style="margin-top:14px">Introducción a la Inversión</h3>
+        <p>Conoce los conceptos básicos de la inversión y los diferentes tipos de activos financieros.</p>
+        <ul class="ef-list" style="margin:16px 0">
+          <li><i class="fas fa-check"></i>6 lecciones fundamentales</li>
+          <li><i class="fas fa-clock"></i>3 horas de contenido</li>
+          <li><i class="fas fa-book"></i>Glosario de términos</li>
+        </ul>
+        <a href="registro-modulos.html" class="btn-primary-gold" style="width:100%;justify-content:center">Comenzar Gratis</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block">
+    <div class="section-label reveal">Programas Premium</div>
+    <h2 class="section-title reveal">Diseñados para tu éxito</h2>
+    <p class="section-desc reveal">Elige entre nuestra selección de cursos especializados con instructores expertos.</p>
+
+    <div class="grid-3">
+      <div class="ef-card reveal reveal-delay-1">
+        <span class="badge-blue">Intermedio</span>
+        <h3 style="margin-top:14px">Inversiones Básicas</h3>
+        <p>Aprende a evaluar acciones, bonos y fondos. Construye tu primer portafolio diversificado.</p>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.82rem;color:var(--text-muted)">
+          <span><i class="fas fa-clock" style="margin-right:6px"></i>10h</span>
+          <span><i class="fas fa-user" style="margin-right:6px"></i>2,340</span>
+        </div>
+        <a href="registro-modulos.html" class="btn-ghost" style="width:100%;justify-content:center;margin-top:16px">Ver Curso</a>
+      </div>
+      <div class="ef-card reveal reveal-delay-2">
+        <span class="badge-gold">Avanzado</span>
+        <h3 style="margin-top:14px">Trading Avanzado</h3>
+        <p>Análisis técnico, patrones de velas, indicadores y estrategias de gestión de riesgo.</p>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.82rem;color:var(--text-muted)">
+          <span><i class="fas fa-clock" style="margin-right:6px"></i>8h 45min</span>
+          <span><i class="fas fa-user" style="margin-right:6px"></i>1,890</span>
+        </div>
+        <a href="registro-modulos.html" class="btn-ghost" style="width:100%;justify-content:center;margin-top:16px">Ver Curso</a>
+      </div>
+      <div class="ef-card reveal reveal-delay-3">
+        <span class="badge-blue">Intermedio</span>
+        <h3 style="margin-top:14px">Análisis Fundamental</h3>
+        <p>Aprende a evaluar el valor intrínseco de las empresas y tomar decisiones informadas.</p>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.82rem;color:var(--text-muted)">
+          <span><i class="fas fa-clock" style="margin-right:6px"></i>6h</span>
+          <span><i class="fas fa-user" style="margin-right:6px"></i>1,420</span>
+        </div>
+        <a href="registro-modulos.html" class="btn-ghost" style="width:100%;justify-content:center;margin-top:16px">Ver Curso</a>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:32px" class="reveal">
+      <a href="miscursos.html" class="btn-ghost">Ver mis cursos <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </section>
+</main>
+
+  <footer class="ef-footer">
+    <div class="footer-grid">
+      <div>
+        <a href="../index.html" class="footer-logo">
+          <div class="logo-icon" style="width:32px;height:32px;font-size:0.8rem"><i class="fas fa-chart-line"></i></div>
+          EduFinanzas
+        </a>
+        <p class="footer-desc">Tu mejor aliado para la educación financiera. Aprende, crece y domina tu dinero.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Plataforma</h5>
+        <ul>
+          <li><a href="cursos.html">Cursos</a></li>
+          <li><a href="juegos.html">Juegos</a></li>
+          <li><a href="wallet.html">Mi Wallet</a></li>
+          <li><a href="metas.html">Metas</a></li>
+          <li><a href="comunidad.html">Comunidad</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Recursos</h5>
+        <ul>
+          <li><a href="informacion.html">Blog Financiero</a></li>
+          <li><a href="ayuda.html">Centro de Ayuda</a></li>
+          <li><a href="calendario.html">Calendario</a></li>
+          <li><a href="miProgreso.html">Mi Progreso</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="mailto:info@edufinanzas.com"><i class="fas fa-envelope" style="margin-right:8px"></i>info@edufinanzas.com</a></li>
+          <li><a href="tel:+57123456789"><i class="fas fa-phone" style="margin-right:8px"></i>+57 123 456 789</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 EduFinanzas. Todos los derechos reservados.</p>
+      <p>Hecho con <span style="color:var(--gold)">♥</span> en Colombia</p>
+    </div>
+  </footer>
+
+<script>
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar')?.classList.toggle('scrolled', scrollY > 30);
+  });
+  // Reveal on scroll
+  const _obs = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => _obs.observe(el));
+  // Toast helper
+  window.efToast = function(msg, type='info'){
+    let t = document.getElementById('efToast');
+    if(!t){ t=document.createElement('div'); t.id='efToast'; t.className='ef-toast'; t.innerHTML='<i class="fas fa-info-circle"></i><span></span>'; document.body.appendChild(t);}
+    t.className='ef-toast '+type+' show';
+    t.querySelector('i').className = type==='success'?'fas fa-check-circle':type==='error'?'fas fa-exclamation-circle':'fas fa-info-circle';
+    t.querySelector('span').textContent=msg;
+    clearTimeout(window._toastT);
+    window._toastT=setTimeout(()=>t.classList.remove('show'), 3500);
+  };
+  // Modal helper
+  window.efModalOpen = id => document.getElementById(id)?.classList.add('show');
+  window.efModalClose = id => document.getElementById(id)?.classList.remove('show');
+  document.querySelectorAll('.ef-modal-backdrop').forEach(b => b.addEventListener('click', e => { if(e.target===b) b.classList.remove('show'); }));
+</script>
+
+</body></html>

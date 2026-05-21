@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comunidad — EduFinanzas</title>
+  <link rel="icon" href="../img/EduFinanzas.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/firebase-auth-styles.css" />
+  
+  <!-- Firebase SDK v9 Compatible -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  
+  <!-- Firebase Auth Global -->
+  <script src="../js/firebase-auth-global.js"></script>
+</head>
+<body>
+
+  <nav class="ef-nav" id="navbar">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+      Edu<span class="logo-dot">Finanzas</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="cursos.html" class="">Cursos</a></li>
+      <li><a href="juegos.html" class="">Juegos</a></li>
+      <li><a href="informacion.html" class="">Recursos</a></li>
+      <li><a href="comunidad.html" class="active">Comunidad</a></li>
+      <li><a href="wallet.html" class="">Mi Wallet</a></li>
+      <!-- Menú dinámico de autenticación -->
+      <li id="auth-menu-placeholder"></li>
+    </ul>
+    <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+<main class="page">
+  <header class="page-header reveal">
+    <div class="section-label">Conecta y crece</div>
+    <h1>Nuestra <span class="gold">Comunidad</span></h1>
+    <p>Un espacio donde compartimos conocimiento, crecemos juntos y nos apoyamos mutuamente en el camino financiero.</p>
+    <div style="margin-top:24px" id="comunidad-actions">
+      <button class="btn-primary-gold" onclick="abrirRegistroComunidad()"><i class="fas fa-user-plus"></i> Unirme a la Comunidad</button>
+    </div>
+  </header>
+
+  <section class="section-block">
+    <div class="grid-4 reveal">
+      <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-value" id="stat-miembros">1.2k</div><div class="stat-label">Miembros activos</div></div>
+      <div class="stat-card"><div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div><div class="stat-value" id="stat-profesores">8</div><div class="stat-label">Profesores</div></div>
+      <div class="stat-card"><div class="stat-icon"><i class="fas fa-graduation-cap"></i></div><div class="stat-value" id="stat-cursos">24</div><div class="stat-label">Cursos activos</div></div>
+      <div class="stat-card"><div class="stat-icon"><i class="fas fa-comments"></i></div><div class="stat-value">500+</div><div class="stat-label">Discusiones activas</div></div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN: Panel de Profesor -->
+  <section class="section-block" id="profesor-panel" style="display:none">
+    <div class="section-label reveal">Panel de Profesor</div>
+    <h2 class="section-title reveal">Gestionar Cursos</h2>
+    <div style="margin-top:24px;margin-bottom:24px">
+      <button class="btn-primary-gold" onclick="abrirModalCrearCurso()"><i class="fas fa-plus"></i> Crear Nuevo Curso</button>
+    </div>
+    <div class="grid-3" id="mis-cursos-profesor" style="margin-top:24px">
+      <!-- Cursos del profesor se cargan dinámicamente -->
+    </div>
+  </section>
+
+  <!-- SECCIÓN: Cursos Disponibles -->
+  <section class="section-block" id="cursos-disponibles">
+    <div class="section-label reveal">Aprende</div>
+    <h2 class="section-title reveal">Cursos de la Comunidad</h2>
+    <p style="color:var(--text-muted);margin-top:8px">Cursos impartidos por profesores verificados de nuestra comunidad</p>
+    <div class="grid-3" id="lista-cursos-comunidad" style="margin-top:24px">
+      <!-- Cursos se cargan dinámicamente desde Firebase -->
+    </div>
+  </section>
+
+  <section class="section-block">
+    <div class="section-label reveal">Lo último</div>
+    <h2 class="section-title reveal">Actividad Reciente</h2>
+    <div class="grid-3" style="margin-top:24px">
+      <div class="ef-card reveal reveal-delay-1">
+        <span class="badge-gold">Experiencia</span>
+        <h3 style="margin-top:14px">Ana compartió su inversión</h3>
+        <p>"¡Mi primera inversión en bolsa fue todo un éxito! Gracias por los consejos del grupo..."</p>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.78rem;color:var(--text-muted)"><span>Hace 2 horas</span><span><i class="fas fa-comment"></i> 15</span></div>
+      </div>
+      <div class="ef-card reveal reveal-delay-2">
+        <span class="badge-blue">Nuevo grupo</span>
+        <h3 style="margin-top:14px">Grupo de Criptomonedas</h3>
+        <p>Carlos creó un nuevo grupo para principiantes en crypto. ¡Todos bienvenidos!</p>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.78rem;color:var(--text-muted)"><span>Hace 4 horas</span><span><i class="fas fa-user"></i> 8</span></div>
+      </div>
+      <div class="ef-card reveal reveal-delay-3">
+        <span class="badge-green">Debate</span>
+        <h3 style="margin-top:14px">Inversión en bienes raíces</h3>
+        <p>"¿Cuál es el mejor momento para invertir en propiedades en Colombia?"</p>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.78rem;color:var(--text-muted)"><span>Hace 6 horas</span><span><i class="fas fa-users"></i> 32</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block">
+    <div class="section-label reveal">Próximamente</div>
+    <h2 class="section-title reveal">Eventos de la Comunidad</h2>
+    <div class="grid-2" style="margin-top:24px">
+      <div class="ef-card reveal reveal-delay-1">
+        <div class="card-icon"><i class="fas fa-broadcast-tower"></i></div>
+        <h3>Sesión de Trading en Vivo</h3>
+        <p>Análisis de mercado en tiempo real con nuestros expertos.</p>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.85rem"><span style="color:var(--gold)">Mañana · 18:00</span><span style="color:var(--text-muted)">32 asistentes</span></div>
+      </div>
+      <div class="ef-card reveal reveal-delay-2">
+        <div class="card-icon"><i class="fas fa-handshake"></i></div>
+        <h3>Encuentro de Inversores</h3>
+        <p>Comparte experiencias y haz networking con otros miembros.</p>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.85rem"><span style="color:var(--gold)">Viernes · 19:00</span><span style="color:var(--text-muted)">45 asistentes</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block">
+    <div class="section-label reveal">Únete</div>
+    <h2 class="section-title reveal">Grupos Activos</h2>
+    <div class="grid-3" style="margin-top:24px">
+      <div class="ef-card reveal reveal-delay-1">
+        <h3>Inversores Principiantes</h3>
+        <p>Aprende los fundamentos de la inversión con otros miembros.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px"><span style="color:var(--text-muted);font-size:0.85rem">156 miembros</span><button class="btn-primary-gold" style="padding:8px 18px;font-size:0.85rem" onclick="efToast('Te uniste al grupo','success')">Unirme</button></div>
+      </div>
+      <div class="ef-card reveal reveal-delay-2">
+        <h3>Trading Diario</h3>
+        <p>Comparte estrategias y análisis de trading en tiempo real.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px"><span style="color:var(--text-muted);font-size:0.85rem">98 miembros</span><button class="btn-primary-gold" style="padding:8px 18px;font-size:0.85rem" onclick="efToast('Te uniste al grupo','success')">Unirme</button></div>
+      </div>
+      <div class="ef-card reveal reveal-delay-3">
+        <h3>Inversión a Largo Plazo</h3>
+        <p>Estrategias y discusiones sobre inversiones a largo plazo.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px"><span style="color:var(--text-muted);font-size:0.85rem">203 miembros</span><button class="btn-primary-gold" style="padding:8px 18px;font-size:0.85rem" onclick="efToast('Te uniste al grupo','success')">Unirme</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block">
+    <div class="section-label reveal">Equipo</div>
+    <h2 class="section-title reveal">Miembros Destacados</h2>
+    <div class="grid-4" style="margin-top:24px">
+      <div class="ef-card reveal reveal-delay-1" style="text-align:center">
+        <div class="avatar-circle" style="margin:0 auto 16px;width:80px;height:80px;font-size:1.5rem"><img src="../img/Fabian.jpg" alt="Fabi" /></div>
+        <h3>Fabian</h3>
+        <p style="color:var(--gold);font-size:0.85rem">Miembro</p>
+      </div>
+      <div class="ef-card reveal reveal-delay-2" style="text-align:center">
+        <div class="avatar-circle" style="margin:0 auto 16px;width:80px;height:80px;font-size:1.5rem"><img src="../img/Adrian.jpg" alt="Adrian" /></div>
+        <h3>Adrian</h3>
+        <p style="color:var(--gold);font-size:0.85rem">Miembro</p>
+      </div>
+      <div class="ef-card reveal reveal-delay-3" style="text-align:center">
+        <div class="avatar-circle" style="margin:0 auto 16px;width:80px;height:80px;font-size:1.5rem"><img src="../img/Pipe.jpg" alt="Andrés Felipe" /></div>
+        <h3>Andrés Felipe</h3>
+        <p style="color:var(--gold);font-size:0.85rem">Miembro</p>
+      </div>
+      <div class="ef-card reveal reveal-delay-4" style="text-align:center">
+        <div class="avatar-circle" style="margin:0 auto 16px;width:80px;height:80px;font-size:1.5rem"><img src="../img/Chucho.jpg" alt="Jesús Camilo" /></div>
+        <h3>Jesús Camilo</h3>
+        <p style="color:var(--gold);font-size:0.85rem">Miembro</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+  <!-- MODAL: Registro a la Comunidad -->
+  <div class="ef-modal-backdrop" id="modalRegistroComunidad">
+    <div class="ef-modal" style="max-width:500px">
+      <div class="ef-modal-header">
+        <h3><i class="fas fa-user-plus"></i> Unirme a la Comunidad</h3>
+        <button class="ef-modal-close" onclick="efModalClose('modalRegistroComunidad')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="ef-modal-body">
+        <p style="color:var(--text-muted);margin-bottom:24px">Elige tu rol para personalizar tu experiencia:</p>
+        
+        <div class="role-selector" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+          <div class="role-card" onclick="seleccionarRol('estudiante')" id="rol-estudiante" style="border:2px solid var(--dark-3);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.3s">
+            <div style="font-size:2.5rem;color:var(--gold);margin-bottom:12px"><i class="fas fa-graduation-cap"></i></div>
+            <h4 style="margin-bottom:8px">Estudiante</h4>
+            <p style="font-size:0.85rem;color:var(--text-muted)">Quiero aprender y acceder a cursos</p>
+          </div>
+          <div class="role-card" onclick="seleccionarRol('profesor')" id="rol-profesor" style="border:2px solid var(--dark-3);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.3s">
+            <div style="font-size:2.5rem;color:var(--accent);margin-bottom:12px"><i class="fas fa-chalkboard-teacher"></i></div>
+            <h4 style="margin-bottom:8px">Profesor</h4>
+            <p style="font-size:0.85rem;color:var(--text-muted)">Quiero impartir cursos y compartir conocimiento</p>
+          </div>
+        </div>
+
+        <div id="form-extra-profesor" style="display:none">
+          <div class="form-group">
+            <label>Especialidad</label>
+            <input type="text" id="prof-especialidad" placeholder="Ej: Trading, Ahorro, Inversiones..." class="ef-input" />
+          </div>
+          <div class="form-group">
+            <label>Biografía breve</label>
+            <textarea id="prof-bio" placeholder="Cuéntanos sobre tu experiencia..." class="ef-input" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="ef-modal-actions">
+        <button class="btn-ghost" onclick="efModalClose('modalRegistroComunidad')">Cancelar</button>
+        <button class="btn-primary-gold" onclick="guardarRegistroComunidad()" id="btn-guardar-rol">Continuar <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Crear Curso (Profesor) -->
+  <div class="ef-modal-backdrop" id="modalCrearCurso">
+    <div class="ef-modal" style="max-width:600px">
+      <div class="ef-modal-header">
+        <h3><i class="fas fa-plus-circle"></i> Crear Nuevo Curso</h3>
+        <button class="ef-modal-close" onclick="efModalClose('modalCrearCurso')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="ef-modal-body">
+        <div class="form-group">
+          <label>Título del Curso *</label>
+          <input type="text" id="curso-titulo" placeholder="Ej: Trading Avanzado para Principiantes" class="ef-input" />
+        </div>
+        <div class="form-group">
+          <label>Descripción *</label>
+          <textarea id="curso-descripcion" placeholder="Describe lo que aprenderán los estudiantes..." class="ef-input" rows="3"></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="form-group">
+            <label>Categoría *</label>
+            <select id="curso-categoria" class="ef-input">
+              <option value="">Seleccionar...</option>
+              <option value="trading">Trading</option>
+              <option value="ahorro">Ahorro</option>
+              <option value="inversion">Inversión</option>
+              <option value="cripto">Criptomonedas</option>
+              <option value="bienes-raices">Bienes Raíces</option>
+              <option value="presupuesto">Presupuesto</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Nivel *</label>
+            <select id="curso-nivel" class="ef-input">
+              <option value="">Seleccionar...</option>
+              <option value="principiante">Principiante</option>
+              <option value="intermedio">Intermedio</option>
+              <option value="avanzado">Avanzado</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+          <div class="form-group">
+            <label>Duración estimada</label>
+            <input type="text" id="curso-duracion" placeholder="Ej: 4 semanas" class="ef-input" />
+          </div>
+          <div class="form-group">
+            <label>Cupos máximos</label>
+            <input type="number" id="curso-cupos" placeholder="Ej: 20" class="ef-input" min="1" max="100" />
+          </div>
+        </div>
+      </div>
+      <div class="ef-modal-actions">
+        <button class="btn-ghost" onclick="efModalClose('modalCrearCurso')">Cancelar</button>
+        <button class="btn-primary-gold" onclick="crearCurso()">Crear Curso <i class="fas fa-check"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Inscribirse en Curso (Estudiante) -->
+  <div class="ef-modal-backdrop" id="modalInscripcionCurso">
+    <div class="ef-modal" style="max-width:500px">
+      <div class="ef-modal-header">
+        <h3><i class="fas fa-graduation-cap"></i> Inscribirme en el Curso</h3>
+        <button class="ef-modal-close" onclick="efModalClose('modalInscripcionCurso')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="ef-modal-body">
+        <div id="info-curso-inscripcion" style="margin-bottom:24px">
+          <!-- Info del curso se carga dinámicamente -->
+        </div>
+        <div class="form-group">
+          <label>Mensaje para el profesor (opcional)</label>
+          <textarea id="inscripcion-mensaje" placeholder="Cuéntanos por qué quieres tomar este curso..." class="ef-input" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="ef-modal-actions">
+        <button class="btn-ghost" onclick="efModalClose('modalInscripcionCurso')">Cancelar</button>
+        <button class="btn-primary-gold" onclick="confirmarInscripcion()">Confirmar Inscripción <i class="fas fa-check"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="efToast" class="ef-toast"></div>
+
+  <footer class="ef-footer">
+    <div class="footer-grid">
+      <div>
+        <a href="../index.html" class="footer-logo">
+          <div class="logo-icon" style="width:32px;height:32px;font-size:0.8rem"><i class="fas fa-chart-line"></i></div>
+          EduFinanzas
+        </a>
+        <p class="footer-desc">Tu mejor aliado para la educación financiera. Aprende, crece y domina tu dinero.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Plataforma</h5>
+        <ul>
+          <li><a href="cursos.html">Cursos</a></li>
+          <li><a href="juegos.html">Juegos</a></li>
+          <li><a href="wallet.html">Mi Wallet</a></li>
+          <li><a href="metas.html">Metas</a></li>
+          <li><a href="comunidad.html">Comunidad</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Recursos</h5>
+        <ul>
+          <li><a href="informacion.html">Blog Financiero</a></li>
+          <li><a href="ayuda.html">Centro de Ayuda</a></li>
+          <li><a href="calendario.html">Calendario</a></li>
+          <li><a href="miProgreso.html">Mi Progreso</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="mailto:info@edufinanzas.com"><i class="fas fa-envelope" style="margin-right:8px"></i>info@edufinanzas.com</a></li>
+          <li><a href="tel:+57123456789"><i class="fas fa-phone" style="margin-right:8px"></i>+57 123 456 789</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 EduFinanzas. Todos los derechos reservados.</p>
+      <p>Hecho con <span style="color:var(--gold)">♥</span> en Colombia</p>
+    </div>
+  </footer>
+
+<style>
+  .role-card.selected { border-color: var(--gold) !important; background: rgba(201,168,76,0.1); }
+  .role-card:hover { border-color: var(--gold-light) !important; }
+  .curso-card { background: var(--dark-2); border: 1px solid var(--dark-3); border-radius: 16px; padding: 24px; transition: all 0.3s; }
+  .curso-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .curso-categoria { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+  .cat-trading { background: rgba(91,138,240,0.2); color: #5b8af0; }
+  .cat-ahorro { background: rgba(46,204,113,0.2); color: #2ecc71; }
+  .cat-inversion { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .cat-cripto { background: rgba(124,92,191,0.2); color: #7c5cbf; }
+  .estado-pendiente { color: var(--gold); }
+  .estado-aceptado { color: var(--green); }
+  .estado-rechazado { color: var(--red); }
+</style>
+
+<script>
+  // ========== INICIALIZACIÓN SIMPLE ==========
+  // Nota: 'db' y 'auth' son globales desde firebase-auth-global.js
+  let currentUser = null;
+  let userRole = null;
+  let selectedRole = null;
+  let cursoSeleccionado = null;
+
+  // Inicializar todo cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', function() {
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (nav) nav.classList.toggle('scrolled', scrollY > 30);
+    });
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Modal helpers
+    window.efModalOpen = function(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('show');
+    };
+    window.efModalClose = function(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('show');
+    };
+
+    // Cerrar modal al hacer clic fuera
+    document.querySelectorAll('.ef-modal-backdrop').forEach(b => {
+      b.addEventListener('click', (e) => {
+        if (e.target === b) b.classList.remove('show');
+      });
+    });
+
+    // Verificar Firebase después de un momento
+    setTimeout(function() {
+      // db y auth son globales desde firebase-auth-global.js
+      if (typeof firebase !== 'undefined' && firebase.firestore && firebase.apps.length > 0) {
+        // Cargar siempre los cursos de la comunidad (para todos los usuarios)
+        cargarCursosComunidad();
+        actualizarEstadisticas();
+        
+        // Verificar usuario
+        firebase.auth().onAuthStateChanged(function(user) {
+          currentUser = user;
+          if (user) {
+            verificarRolUsuario(user.uid);
+            // Recargar cursos para mostrar estado de inscripción correcto
+            cargarCursosComunidad();
+          } else {
+            mostrarBotonUnirse();
+          }
+        });
+      } else {
+        mostrarBotonUnirse();
+        cargarCursosDemo();
+      }
+    }, 800);
+  });
+
+  // Toast helper
+  window.efToast = function(msg, type='info'){
+    let t = document.getElementById('efToast');
+    if(!t){ 
+      t=document.createElement('div'); 
+      t.id='efToast'; 
+      document.body.appendChild(t);
+    }
+    // Asegurar que tenga los elementos internos
+    if (!t.querySelector('i') || !t.querySelector('span')) {
+      t.innerHTML = '<i class="fas fa-info-circle"></i><span></span>';
+    }
+    t.className='ef-toast '+type+' show';
+    t.querySelector('i').className = type==='success'?'fas fa-check-circle':type==='error'?'fas fa-exclamation-circle':'fas fa-info-circle';
+    t.querySelector('span').textContent=msg;
+    clearTimeout(window._toastT);
+    window._toastT=setTimeout(()=>t.classList.remove('show'), 3500);
+  };
+
+  // ========== AUTENTICACIÓN Y ROLES ==========
+  async function verificarRolUsuario(uid) {
+    if (!db) { console.error('DB no inicializado'); return; }
+    try {
+      const doc = await db.collection('comunidad_miembros').doc(uid).get();
+      if (doc.exists) {
+        userRole = doc.data().rol;
+        actualizarUIporRol();
+      } else {
+        mostrarBotonUnirse();
+      }
+    } catch (error) {
+      console.error('Error verificando rol:', error);
+    }
+  }
+
+  function mostrarBotonUnirse() {
+    const actionsDiv = document.getElementById('comunidad-actions');
+    if (!actionsDiv) return;
+    actionsDiv.innerHTML = `
+      <button class="btn-primary-gold" onclick="abrirRegistroComunidad()">
+        <i class="fas fa-user-plus"></i> Unirme a la Comunidad
+      </button>
+    `;
+  }
+
+  function actualizarUIporRol() {
+    const actionsDiv = document.getElementById('comunidad-actions');
+    if (!actionsDiv) return;
+    
+    if (userRole === 'profesor') {
+      actionsDiv.innerHTML = `
+        <div style="display:flex;gap:12px;align-items:center">
+          <span class="badge-gold"><i class="fas fa-chalkboard-teacher"></i> Profesor</span>
+          <button class="btn-primary-gold" onclick="abrirModalCrearCurso()">
+            <i class="fas fa-plus"></i> Crear Curso
+          </button>
+        </div>
+      `;
+      const profesorPanel = document.getElementById('profesor-panel');
+      if (profesorPanel) profesorPanel.style.display = 'block';
+      cargarMisCursosProfesor();
+    } else if (userRole === 'estudiante') {
+      actionsDiv.innerHTML = `
+        <div style="display:flex;gap:12px;align-items:center">
+          <span class="badge-blue"><i class="fas fa-graduation-cap"></i> Estudiante</span>
+        </div>
+      `;
+    }
+  }
+
+  // ========== REGISTRO A LA COMUNIDAD ==========
+  function abrirRegistroComunidad() {
+    if (!currentUser) {
+      efToast('Debes iniciar sesión primero', 'error');
+      setTimeout(() => window.location.href = 'login.html', 1500);
+      return;
+    }
+    selectedRole = null;
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('form-extra-profesor').style.display = 'none';
+    efModalOpen('modalRegistroComunidad');
+  }
+
+  function seleccionarRol(rol) {
+    selectedRole = rol;
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('rol-' + rol).classList.add('selected');
+    document.getElementById('form-extra-profesor').style.display = rol === 'profesor' ? 'block' : 'none';
+  }
+
+  async function guardarRegistroComunidad() {
+    if (!db) { efToast('Error: base de datos no disponible', 'error'); return; }
+    if (!selectedRole) {
+      efToast('Selecciona un rol para continuar', 'error');
+      return;
+    }
+
+    const datos = {
+      userId: currentUser.uid,
+      email: currentUser.email,
+      nombre: currentUser.displayName || currentUser.email.split('@')[0],
+      rol: selectedRole,
+      fechaRegistro: firebase.firestore.FieldValue.serverTimestamp(),
+      activo: true
+    };
+
+    if (selectedRole === 'profesor') {
+      const especialidad = document.getElementById('prof-especialidad').value.trim();
+      const bio = document.getElementById('prof-bio').value.trim();
+      
+      if (!especialidad) {
+        efToast('Ingresa tu especialidad', 'error');
+        return;
+      }
+      
+      datos.especialidad = especialidad;
+      datos.biografia = bio;
+      datos.cursosCreados = 0;
+      datos.verificado = false; // Los profesores necesitan verificación
+    }
+
+    try {
+      // Guardar el miembro en la colección
+      await db.collection('comunidad_miembros').doc(currentUser.uid).set(datos);
+      
+      // Intentar actualizar estadísticas (no crítico si falla)
+      try {
+        await db.collection('estadisticas').doc('comunidad').set({
+          totalMiembros: firebase.firestore.FieldValue.increment(1),
+          [selectedRole === 'profesor' ? 'profesores' : 'estudiantes']: firebase.firestore.FieldValue.increment(1)
+        }, { merge: true });
+      } catch (e) {
+        console.warn('No se pudieron actualizar estadísticas:', e);
+      }
+
+      userRole = selectedRole;
+      efModalClose('modalRegistroComunidad');
+      efToast(`¡Bienvenido a la comunidad como ${selectedRole}!`, 'success');
+      actualizarUIporRol();
+      actualizarEstadisticas();
+    } catch (error) {
+      console.error('Error al registrar:', error);
+      
+      // Mensaje de error específico
+      if (error.code === 'permission-denied') {
+        efToast('Firestore no está habilitado. Ve a Firebase Console y habilita Firestore Database.', 'error');
+      } else if (error.code === 'unavailable') {
+        efToast('Sin conexión a Firebase. Verifica tu internet.', 'error');
+      } else {
+        efToast('Error: ' + (error.message || 'Intenta de nuevo'), 'error');
+      }
+    }
+  }
+
+  // ========== GESTIÓN DE CURSOS (PROFESORES) ==========
+  function abrirModalCrearCurso() {
+    if (userRole !== 'profesor') {
+      efToast('Solo los profesores pueden crear cursos', 'error');
+      return;
+    }
+    document.getElementById('curso-titulo').value = '';
+    document.getElementById('curso-descripcion').value = '';
+    document.getElementById('curso-categoria').value = '';
+    document.getElementById('curso-nivel').value = '';
+    document.getElementById('curso-duracion').value = '';
+    document.getElementById('curso-cupos').value = '';
+    efModalOpen('modalCrearCurso');
+  }
+
+  let creandoCurso = false;
+  async function crearCurso() {
+    if (creandoCurso) return; // Prevenir doble-clic
+    if (!db) { efToast('Error: base de datos no disponible', 'error'); return; }
+    
+    const titulo = document.getElementById('curso-titulo').value.trim();
+    const descripcion = document.getElementById('curso-descripcion').value.trim();
+    const categoria = document.getElementById('curso-categoria').value;
+    const nivel = document.getElementById('curso-nivel').value;
+    const duracion = document.getElementById('curso-duracion').value.trim();
+    const cupos = parseInt(document.getElementById('curso-cupos').value) || 20;
+
+    if (!titulo || !descripcion || !categoria || !nivel) {
+      efToast('Completa todos los campos obligatorios', 'error');
+      return;
+    }
+
+    creandoCurso = true;
+
+    try {
+      // Verificar si ya existe un curso con el mismo título del mismo profesor
+      const existente = await db.collection('cursos_comunidad')
+        .where('profesorId', '==', currentUser.uid)
+        .where('titulo', '==', titulo)
+        .get();
+      
+      if (!existente.empty) {
+        efToast('Ya tienes un curso con ese título', 'error');
+        creandoCurso = false;
+        return;
+      }
+
+      const cursoData = {
+        titulo,
+        descripcion,
+        categoria,
+        nivel,
+        duracion,
+        cuposMaximos: cupos,
+        cuposOcupados: 0,
+        profesorId: currentUser.uid,
+        profesorNombre: currentUser.displayName || currentUser.email.split('@')[0],
+        profesorEmail: currentUser.email,
+        fechaCreacion: firebase.firestore.FieldValue.serverTimestamp(),
+        activo: true,
+        inscripciones: []
+      };
+
+      await db.collection('cursos_comunidad').add(cursoData);
+      
+      // Actualizar contador de cursos del profesor
+      await db.collection('comunidad_miembros').doc(currentUser.uid).update({
+        cursosCreados: firebase.firestore.FieldValue.increment(1)
+      });
+
+      // Actualizar estadísticas
+      try {
+        await db.collection('estadisticas').doc('comunidad').set({
+          totalCursos: firebase.firestore.FieldValue.increment(1)
+        }, { merge: true });
+      } catch (e) {
+        console.warn('Stats update failed:', e);
+      }
+
+      efModalClose('modalCrearCurso');
+      efToast('Curso creado exitosamente', 'success');
+      cargarMisCursosProfesor();
+      cargarCursosComunidad();
+      actualizarEstadisticas();
+    } catch (error) {
+      console.error('Error al crear curso:', error);
+      efToast('Error al crear el curso', 'error');
+    } finally {
+      creandoCurso = false;
+    }
+  }
+
+  async function cargarMisCursosProfesor() {
+    if (!db || !currentUser || userRole !== 'profesor') return;
+    
+    const container = document.getElementById('mis-cursos-profesor');
+    if (!container) return;
+    container.innerHTML = '<p style="color:var(--text-muted)">Cargando tus cursos...</p>';
+
+    try {
+      const snapshot = await db.collection('cursos_comunidad')
+        .where('profesorId', '==', currentUser.uid)
+        .get();
+
+      if (snapshot.empty) {
+        container.innerHTML = '<p style="color:var(--text-muted)">Aún no has creado cursos.</p>';
+        return;
+      }
+
+      // Ordenar manualmente por fecha
+      const docs = [];
+      snapshot.forEach(doc => docs.push(doc));
+      docs.sort((a, b) => {
+        const fechaA = a.data().fechaCreacion?.seconds || 0;
+        const fechaB = b.data().fechaCreacion?.seconds || 0;
+        return fechaB - fechaA;
+      });
+
+      container.innerHTML = '';
+      docs.forEach(doc => {
+        const curso = doc.data();
+        const card = document.createElement('div');
+        card.className = 'curso-card';
+        card.innerHTML = `
+          <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+          <h4 style="margin-top:12px;margin-bottom:8px">${curso.titulo}</h4>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">${curso.descripcion.substring(0, 100)}...</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.85rem">
+            <span><i class="fas fa-users"></i> ${curso.cuposOcupados}/${curso.cuposMaximos} inscritos</span>
+            <span class="badge-${curso.activo ? 'green' : 'red'}">${curso.activo ? 'Activo' : 'Inactivo'}</span>
+          </div>
+          <div style="margin-top:12px">
+            <button class="btn-ghost" style="padding:6px 12px;font-size:0.8rem" onclick="verInscripciones('${doc.id}')">
+              <i class="fas fa-list"></i> Ver inscripciones
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    } catch (error) {
+      console.error('Error cargando cursos:', error);
+      container.innerHTML = '<p style="color:var(--red)">Error al cargar cursos.</p>';
+    }
+  }
+
+  // ========== CURSOS PARA ESTUDIANTES ==========
+  function cargarCursosDemo() {
+    const container = document.getElementById('lista-cursos-comunidad');
+    if (!container) return;
+    
+    const cursosDemo = [
+      {
+        id: 'demo-1',
+        titulo: 'Trading para Principiantes',
+        descripcion: 'Aprende los fundamentos del trading desde cero. Estrategias básicas, análisis técnico y gestión de riesgo.',
+        categoria: 'trading',
+        nivel: 'principiante',
+        duracion: '4 semanas',
+        profesorNombre: 'Carlos Mendez',
+        cuposOcupados: 12,
+        cuposMaximos: 20,
+        inscripciones: []
+      },
+      {
+        id: 'demo-2',
+        titulo: 'Ahorro Inteligente',
+        descripcion: 'Descubre técnicas efectivas para ahorrar y hacer crecer tu dinero de forma segura y constante.',
+        categoria: 'ahorro',
+        nivel: 'principiante',
+        duracion: '2 semanas',
+        profesorNombre: 'Ana García',
+        cuposOcupados: 8,
+        cuposMaximos: 15,
+        inscripciones: []
+      },
+      {
+        id: 'demo-3',
+        titulo: 'Inversión en Criptomonedas',
+        descripcion: 'Todo lo que necesitas saber para invertir en crypto de forma segura y responsable.',
+        categoria: 'cripto',
+        nivel: 'intermedio',
+        duracion: '6 semanas',
+        profesorNombre: 'Luis Torres',
+        cuposOcupados: 18,
+        cuposMaximos: 25,
+        inscripciones: []
+      }
+    ];
+    
+    container.innerHTML = '';
+    cursosDemo.forEach(curso => {
+      const hayCupos = curso.cuposOcupados < curso.cuposMaximos;
+      const card = document.createElement('div');
+      card.className = 'curso-card';
+      card.innerHTML = `
+        <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+        <h4 style="margin-top:12px;margin-bottom:8px">${curso.titulo}</h4>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">${curso.descripcion.substring(0, 120)}...</p>
+        <div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.8rem;color:var(--text-muted)">
+          <span><i class="fas fa-signal"></i> ${curso.nivel}</span>
+          <span><i class="fas fa-clock"></i> ${curso.duracion}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <span style="font-size:0.85rem"><i class="fas fa-chalkboard-teacher"></i> ${curso.profesorNombre}</span>
+          <span style="font-size:0.85rem;color:var(--text-muted)">${curso.cuposOcupados}/${curso.cuposMaximos} cupos</span>
+        </div>
+        <button class="btn-primary-gold" style="width:100%" onclick="efToast('Inicia sesión para inscribirte', 'info')">
+          <i class="fas fa-user-plus"></i> Inscribirme
+        </button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  async function cargarCursosComunidad() {
+    if (!db) { 
+      console.log('DB no disponible, cargando demo');
+      cargarCursosDemo();
+      return; 
+    }
+    const container = document.getElementById('lista-cursos-comunidad');
+    if (!container) { console.error('Contenedor de cursos no encontrado'); return; }
+    container.innerHTML = '<p style="color:var(--text-muted)">Cargando cursos...</p>';
+
+    try {
+      const snapshot = await db.collection('cursos_comunidad')
+        .where('activo', '==', true)
+        .get();
+
+      if (snapshot.empty) {
+        container.innerHTML = '<p style="color:var(--text-muted)">Aún no hay cursos disponibles.</p>';
+        return;
+      }
+
+      // Ordenar manualmente por fecha (más recientes primero)
+      const docs = [];
+      snapshot.forEach(doc => docs.push(doc));
+      docs.sort((a, b) => {
+        const fechaA = a.data().fechaCreacion?.seconds || 0;
+        const fechaB = b.data().fechaCreacion?.seconds || 0;
+        return fechaB - fechaA;
+      });
+
+      container.innerHTML = '';
+      docs.forEach(doc => {
+        const curso = doc.data();
+        const hayCupos = curso.cuposOcupados < curso.cuposMaximos;
+        const esMiCurso = currentUser && curso.profesorId === currentUser.uid;
+        const yaInscrito = currentUser && curso.inscripciones?.some(i => i.estudianteId === currentUser.uid);
+        
+        const card = document.createElement('div');
+        card.className = 'curso-card';
+        card.innerHTML = `
+          <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+          <h4 style="margin-top:12px;margin-bottom:8px">${curso.titulo}</h4>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">${curso.descripcion.substring(0, 120)}...</p>
+          <div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.8rem;color:var(--text-muted)">
+            <span><i class="fas fa-signal"></i> ${curso.nivel}</span>
+            <span><i class="fas fa-clock"></i> ${curso.duracion || 'Flexible'}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <span style="font-size:0.85rem"><i class="fas fa-chalkboard-teacher"></i> ${curso.profesorNombre}</span>
+            <span style="font-size:0.85rem;color:var(--text-muted)">${curso.cuposOcupados}/${curso.cuposMaximos} cupos</span>
+          </div>
+          ${esMiCurso ?
+            '<button class="btn-ghost" disabled style="width:100%"><i class="fas fa-chalkboard-teacher"></i> Tu curso</button>' :
+            yaInscrito ? 
+            '<button class="btn-ghost" disabled style="width:100%"><i class="fas fa-check"></i> Ya inscrito</button>' :
+            hayCupos ?
+            `<button class="btn-primary-gold" style="width:100%" onclick="abrirInscripcion('${doc.id}', '${curso.titulo}', '${curso.profesorNombre}', '${curso.profesorId}')">
+              <i class="fas fa-user-plus"></i> Inscribirme
+            </button>` :
+            '<button class="btn-ghost" disabled style="width:100%"><i class="fas fa-times"></i> Sin cupos</button>'
+          }
+        `;
+        container.appendChild(card);
+      });
+    } catch (error) {
+      console.error('Error cargando cursos:', error);
+      container.innerHTML = '<p style="color:var(--red)">Error al cargar cursos.</p>';
+    }
+  }
+
+  function abrirInscripcion(cursoId, titulo, profesor, profesorId) {
+    if (!currentUser) {
+      efToast('Debes iniciar sesión para inscribirte', 'error');
+      setTimeout(() => window.location.href = 'login.html', 1500);
+      return;
+    }
+    if (profesorId && currentUser.uid === profesorId) {
+      efToast('No puedes inscribirte en tu propio curso', 'error');
+      return;
+    }
+    
+    cursoSeleccionado = cursoId;
+    document.getElementById('info-curso-inscripcion').innerHTML = `
+      <h4 style="margin-bottom:8px">${titulo}</h4>
+      <p style="color:var(--text-muted);font-size:0.9rem"><i class="fas fa-chalkboard-teacher"></i> Impartido por: ${profesor}</p>
+    `;
+    document.getElementById('inscripcion-mensaje').value = '';
+    efModalOpen('modalInscripcionCurso');
+  }
+
+  async function confirmarInscripcion() {
+    if (!db) { efToast('Error: base de datos no disponible', 'error'); return; }
+    if (!cursoSeleccionado || !currentUser) return;
+
+    const mensaje = document.getElementById('inscripcion-mensaje').value.trim();
+    
+    const inscripcionData = {
+      estudianteId: currentUser.uid,
+      estudianteEmail: currentUser.email,
+      estudianteNombre: currentUser.displayName || currentUser.email.split('@')[0],
+      mensaje: mensaje,
+      fechaInscripcion: firebase.firestore.Timestamp.now(),
+      estado: 'pendiente' // pendiente, aceptado, rechazado
+    };
+
+    try {
+      const cursoRef = db.collection('cursos_comunidad').doc(cursoSeleccionado);
+      
+      await db.runTransaction(async (transaction) => {
+        const cursoDoc = await transaction.get(cursoRef);
+        const cursoData = cursoDoc.data();
+        
+        if (cursoData.cuposOcupados >= cursoData.cuposMaximos) {
+          throw new Error('No hay cupos disponibles');
+        }
+        
+        if (cursoData.inscripciones?.some(i => i.estudianteId === currentUser.uid)) {
+          throw new Error('Ya estás inscrito en este curso');
+        }
+        
+        transaction.update(cursoRef, {
+          inscripciones: firebase.firestore.FieldValue.arrayUnion(inscripcionData),
+          cuposOcupados: firebase.firestore.FieldValue.increment(1)
+        });
+      });
+
+      efModalClose('modalInscripcionCurso');
+      efToast('Inscripción enviada. El profesor debe aprobarla.', 'success');
+      cargarCursosComunidad();
+    } catch (error) {
+      console.error('Error en inscripción:', error);
+      efToast(error.message || 'Error al inscribirte', 'error');
+    }
+  }
+
+  // ========== GESTIÓN DE INSCRIPCIONES (PROFESOR) ==========
+  async function verInscripciones(cursoId) {
+    if (!db) { console.error('DB no inicializado'); return; }
+    try {
+      const doc = await db.collection('cursos_comunidad').doc(cursoId).get();
+      const curso = doc.data();
+      
+      if (!curso.inscripciones || curso.inscripciones.length === 0) {
+        efToast('Aún no hay inscripciones en este curso', 'info');
+        return;
+      }
+
+      let html = `<h3 style="margin-bottom:16px">Inscripciones: ${curso.titulo}</h3>`;
+      html += '<div style="max-height:400px;overflow-y:auto">';
+      
+      curso.inscripciones.forEach((insc, index) => {
+        const estadoClass = insc.estado === 'aceptado' ? 'estado-aceptado' : 
+                           insc.estado === 'rechazado' ? 'estado-rechazado' : 'estado-pendiente';
+        
+        html += `
+          <div style="background:var(--dark-3);border-radius:8px;padding:16px;margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <strong>${insc.estudianteNombre}</strong>
+              <span class="${estadoClass}" style="font-size:0.85rem;text-transform:uppercase"><i class="fas fa-circle" style="font-size:0.5rem"></i> ${insc.estado}</span>
+            </div>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px">${insc.mensaje || 'Sin mensaje'}</p>
+            ${insc.estado === 'pendiente' ? `
+              <div style="display:flex;gap:8px">
+                <button class="btn-primary-gold" style="padding:6px 12px;font-size:0.8rem" onclick="gestionarInscripcion('${cursoId}', ${index}, 'aceptado')">
+                  <i class="fas fa-check"></i> Aceptar
+                </button>
+                <button class="btn-ghost" style="padding:6px 12px;font-size:0.8rem" onclick="gestionarInscripcion('${cursoId}', ${index}, 'rechazado')">
+                  <i class="fas fa-times"></i> Rechazar
+                </button>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      
+      // Mostrar en un modal personalizado
+      const modalDiv = document.createElement('div');
+      modalDiv.className = 'ef-modal-backdrop show';
+      modalDiv.id = 'modalInscripcionesTemp';
+      modalDiv.innerHTML = `
+        <div class="ef-modal" style="max-width:600px">
+          <div class="ef-modal-header">
+            <h3><i class="fas fa-list"></i> Gestión de Inscripciones</h3>
+            <button class="ef-modal-close" onclick="document.getElementById('modalInscripcionesTemp').remove()"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="ef-modal-body">${html}</div>
+          <div class="ef-modal-actions">
+            <button class="btn-ghost" onclick="document.getElementById('modalInscripcionesTemp').remove()">Cerrar</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modalDiv);
+      
+    } catch (error) {
+      console.error('Error:', error);
+      efToast('Error al cargar inscripciones', 'error');
+    }
+  }
+
+  async function gestionarInscripcion(cursoId, index, nuevoEstado) {
+    if (!db) { console.error('DB no inicializado'); return; }
+    try {
+      const cursoRef = db.collection('cursos_comunidad').doc(cursoId);
+      const doc = await cursoRef.get();
+      const curso = doc.data();
+      
+      curso.inscripciones[index].estado = nuevoEstado;
+      
+      await cursoRef.update({ inscripciones: curso.inscripciones });
+      
+      efToast(`Inscripción ${nuevoEstado === 'aceptado' ? 'aceptada' : 'rechazada'}`, 'success');
+      document.getElementById('modalInscripcionesTemp').remove();
+      cargarMisCursosProfesor();
+    } catch (error) {
+      console.error('Error:', error);
+      efToast('Error al gestionar inscripción', 'error');
+    }
+  }
+
+  // ========== ESTADÍSTICAS ==========
+  async function actualizarEstadisticas() {
+    if (!db) return;
+    try {
+      const [miembrosSnap, profesoresSnap, cursosSnap] = await Promise.all([
+        db.collection('comunidad_miembros').where('activo', '==', true).get(),
+        db.collection('comunidad_miembros').where('rol', '==', 'profesor').where('activo', '==', true).get(),
+        db.collection('cursos_comunidad').where('activo', '==', true).get()
+      ]);
+      document.getElementById('stat-miembros').textContent = miembrosSnap.size.toLocaleString();
+      document.getElementById('stat-profesores').textContent = profesoresSnap.size.toLocaleString();
+      document.getElementById('stat-cursos').textContent = cursosSnap.size.toLocaleString();
+    } catch (error) {
+      console.error('Error cargando estadísticas:', error);
+    }
+  }
+
+</script>
+
+</body></html>

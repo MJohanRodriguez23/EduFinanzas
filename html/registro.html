@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro — EduFinanzas</title>
+  <link rel="icon" href="../img/EduFinanzas.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <!-- Firebase SDK v9 Compatible -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+  
+  <!-- Firebase Auth Global -->
+  <link rel="stylesheet" href="../css/firebase-auth-styles.css" />
+  <script src="../js/firebase-auth-global.js"></script>
+  
+</head>
+<body>
+
+  <nav class="ef-nav" id="navbar">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+      Edu<span class="logo-dot">Finanzas</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="cursos.html" class="">Cursos</a></li>
+      <li><a href="juegos.html" class="">Juegos</a></li>
+      <li><a href="informacion.html" class="">Recursos</a></li>
+      <li><a href="comunidad.html" class="">Comunidad</a></li>
+      <li><a href="wallet.html" class="">Mi Wallet</a></li>
+      <!-- Menú dinámico de autenticación -->
+      <li id="auth-menu-placeholder"></li>
+    </ul>
+    <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+<div class="auth-bg"></div>
+<div class="auth-wrap">
+  <div class="auth-card reveal visible" style="max-width:520px">
+    <div style="text-align:center;margin-bottom:8px">
+      <div class="logo-icon" style="margin:0 auto 16px;width:56px;height:56px;font-size:1.3rem"><i class="fas fa-chart-line"></i></div>
+    </div>
+    <h2 style="text-align:center">Únete a EduFinanzas</h2>
+    <p class="auth-sub" style="text-align:center">Crea tu cuenta y empieza a dominar tus finanzas</p>
+
+    <form id="registerForm" novalidate>
+      <div class="form-group">
+        <label>Nombre Completo</label>
+        <input type="text" id="fullname" placeholder="Tu nombre completo" required />
+      </div>
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input type="email" id="email" placeholder="tu@correo.com" required />
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" id="phone" placeholder="+57 300 000 0000" />
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="pass" placeholder="Mínimo 8 caracteres" required />
+        </div>
+        <div class="form-group">
+          <label>Confirmar</label>
+          <input type="password" id="pass2" placeholder="Repite la contraseña" required />
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--text-muted);margin-bottom:20px">
+        <input type="checkbox" id="terms" /> Acepto los términos y condiciones
+      </label>
+      <button type="submit" class="btn-primary-gold" style="width:100%;justify-content:center">
+        Crear cuenta <i class="fas fa-user-plus"></i>
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+    </div>
+  </div>
+</div>
+
+  <footer class="ef-footer">
+    <div class="footer-grid">
+      <div>
+        <a href="../index.html" class="footer-logo">
+          <div class="logo-icon" style="width:32px;height:32px;font-size:0.8rem"><i class="fas fa-chart-line"></i></div>
+          EduFinanzas
+        </a>
+        <p class="footer-desc">Tu mejor aliado para la educación financiera. Aprende, crece y domina tu dinero.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Plataforma</h5>
+        <ul>
+          <li><a href="cursos.html">Cursos</a></li>
+          <li><a href="juegos.html">Juegos</a></li>
+          <li><a href="wallet.html">Mi Wallet</a></li>
+          <li><a href="metas.html">Metas</a></li>
+          <li><a href="comunidad.html">Comunidad</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Recursos</h5>
+        <ul>
+          <li><a href="informacion.html">Blog Financiero</a></li>
+          <li><a href="ayuda.html">Centro de Ayuda</a></li>
+          <li><a href="calendario.html">Calendario</a></li>
+          <li><a href="miProgreso.html">Mi Progreso</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="mailto:info@edufinanzas.com"><i class="fas fa-envelope" style="margin-right:8px"></i>info@edufinanzas.com</a></li>
+          <li><a href="tel:+57123456789"><i class="fas fa-phone" style="margin-right:8px"></i>+57 123 456 789</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 EduFinanzas. Todos los derechos reservados.</p>
+      <p>Hecho con <span style="color:var(--gold)">♥</span> en Colombia</p>
+    </div>
+  </footer>
+
+<script>
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar')?.classList.toggle('scrolled', scrollY > 30);
+  });
+  // Reveal on scroll
+  const _obs = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => _obs.observe(el));
+  // Toast helper
+  window.efToast = function(msg, type='info'){
+    let t = document.getElementById('efToast');
+    if(!t){ t=document.createElement('div'); t.id='efToast'; t.className='ef-toast'; t.innerHTML='<i class="fas fa-info-circle"></i><span></span>'; document.body.appendChild(t);}
+    t.className='ef-toast '+type+' show';
+    t.querySelector('i').className = type==='success'?'fas fa-check-circle':type==='error'?'fas fa-exclamation-circle':'fas fa-info-circle';
+    t.querySelector('span').textContent=msg;
+    clearTimeout(window._toastT);
+    window._toastT=setTimeout(()=>t.classList.remove('show'), 3500);
+  };
+  // Modal helper
+  window.efModalOpen = id => document.getElementById(id)?.classList.add('show');
+  window.efModalClose = id => document.getElementById(id)?.classList.remove('show');
+  document.querySelectorAll('.ef-modal-backdrop').forEach(b => b.addEventListener('click', e => { if(e.target===b) b.classList.remove('show'); }));
+</script>
+
+<script>
+// Bandera para evitar redirección automática después del registro
+window.isRegistering = false;
+
+// Verificar si ya hay usuario autenticado
+document.addEventListener('DOMContentLoaded', () => {
+  // El script firebase-auth-global.js ya maneja la detección de usuarios
+  
+  // Manejar registro
+  document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('fullname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('pass').value;
+    const password2 = document.getElementById('pass2').value;
+    const termsAccepted = document.getElementById('terms').checked;
+    
+    // Validaciones
+    if (!name) return efToast('Ingresa tu nombre completo','error');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return efToast('Correo inválido','error');
+    if (password.length < 8) return efToast('La contraseña debe tener 8+ caracteres','error');
+    if (password !== password2) return efToast('Las contraseñas no coinciden','error');
+    if (!termsAccepted) return efToast('Debes aceptar los términos y condiciones','error');
+    
+    // Mostrar loading
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando cuenta...';
+    submitBtn.disabled = true;
+    
+    // Establecer bandera para evitar redirección automática
+    window.isRegistering = true;
+    
+    try {
+      console.log(' Creando cuenta para:', email);
+      
+      // Crear usuario en Authentication
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      
+      console.log(' Usuario creado en Authentication:', user.email);
+      
+      // Actualizar perfil con el nombre
+      if (name) {
+        await user.updateProfile({ displayName: name });
+      }
+      
+      // Guardar datos adicionales en Firestore
+      await db.collection('users').doc(user.uid).set({
+        uid: user.uid,
+        email: email,
+        displayName: name,
+        phone: phone,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        profileComplete: false,
+        onboardingCompleted: false,
+        preferences: {
+          language: 'es',
+          notifications: true,
+          theme: 'dark'
+        }
+      });
+      
+      console.log(' Datos guardados en Firestore');
+      
+      // Enviar email de verificación
+      await user.sendEmailVerification();
+      
+      efToast('¡Cuenta creada exitosamente!','success');
+      
+      // Redirigir inmediatamente
+      window.location.href = '../index.html';
+      
+    } catch (error) {
+      console.error(' Error en registro:', error);
+      
+      let errorMessage = 'Error al crear cuenta';
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'Este correo electrónico ya está en uso';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'La contraseña debe tener al menos 6 caracteres';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Correo electrónico inválido';
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'Error de conexión. Verifica tu internet';
+      }
+      
+      efToast(errorMessage,'error');
+    } finally {
+      // Restaurar botón
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+      // Restablecer bandera
+      window.isRegistering = false;
+    }
+  });
+});
+</script>
+
+</body></html>
