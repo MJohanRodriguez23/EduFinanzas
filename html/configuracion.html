@@ -50,38 +50,35 @@
   <div style="display:grid;grid-template-columns:280px 1fr;gap:32px;align-items:start" class="reveal">
     <aside class="ef-card-3" style="position:sticky;top:100px">
       <div style="text-align:center;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:16px">
-        <div class="avatar-circle" style="margin:0 auto 12px;width:80px;height:80px;font-size:1.5rem">PF</div>
-        <div style="font-family:'Syne',sans-serif;font-weight:700">Pedrito el Financiero</div>
-        <div style="color:var(--text-muted);font-size:0.85rem">Estudiante de Finanzas</div>
+        <div class="avatar-circle" style="margin:0 auto 12px;width:80px;height:80px;font-size:1.5rem" id="cfg-avatar">--</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700" id="cfg-nombre">Cargando...</div>
+        <div style="color:var(--text-muted);font-size:0.85rem" id="cfg-email">...</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px" id="settingsTabs">
-        <button class="ef-tab active" data-tab="personal" style="text-align:left;border-radius:8px;padding:12px 16px"><i class="fas fa-user" style="margin-right:8px"></i>Información Personal</button>
-        <button class="ef-tab" data-tab="account" style="text-align:left;border-radius:8px;padding:12px 16px"><i class="fas fa-key" style="margin-right:8px"></i>Cuenta</button>
+        <button class="ef-tab active" data-tab="account" style="text-align:left;border-radius:8px;padding:12px 16px"><i class="fas fa-key" style="margin-right:8px"></i>Cuenta</button>
         <button class="ef-tab" data-tab="privacy" style="text-align:left;border-radius:8px;padding:12px 16px"><i class="fas fa-lock" style="margin-right:8px"></i>Privacidad</button>
         <button class="ef-tab" data-tab="notif" style="text-align:left;border-radius:8px;padding:12px 16px"><i class="fas fa-bell" style="margin-right:8px"></i>Notificaciones</button>
       </div>
     </aside>
 
     <div>
-      <div class="ef-card-3 settings-pane" id="pane-personal">
-        <h3 style="margin-bottom:24px">Información Personal</h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-          <div class="form-group"><label>Nombre Completo</label><input type="text" value="Pedrito el Financiero" /></div>
-          <div class="form-group"><label>Correo</label><input type="email" value="pedrito123@gmail.com" /></div>
-          <div class="form-group"><label>Teléfono</label><input type="tel" value="+57 300 123 4567" /></div>
-          <div class="form-group"><label>Fecha de Nacimiento</label><input type="date" value="2000-01-15" /></div>
+      <div class="ef-card-3 settings-pane" id="pane-account">
+        <h3 style="margin-bottom:24px"><i class="fas fa-key" style="margin-right:8px;color:var(--gold)"></i>Cambiar Contraseña</h3>
+        <div class="form-group">
+          <label>Contraseña Actual *</label>
+          <input type="password" id="cfg-pass-actual" placeholder="Ingresa tu contraseña actual" />
         </div>
-        <div class="form-group"><label>Biografía</label><textarea>Estudiante apasionado por las finanzas y la inversión.</textarea></div>
-        <button class="btn-primary-gold" onclick="efToast('Cambios guardados','success')">Guardar Cambios</button>
-      </div>
-
-      <div class="ef-card-3 settings-pane" id="pane-account" style="display:none">
-        <h3 style="margin-bottom:24px">Configuración de la Cuenta</h3>
-        <div class="form-group"><label>Nombre de Usuario</label><input type="text" value="pedrito123" /></div>
-        <div class="form-group"><label>Nueva Contraseña</label><input type="password" /></div>
-        <div class="form-group"><label>Confirmar Nueva Contraseña</label><input type="password" /></div>
-        <div class="form-group"><label>Idioma Preferido</label><select><option>Español</option><option>English</option><option>Français</option></select></div>
-        <button class="btn-primary-gold" onclick="efToast('Cuenta actualizada','success')">Actualizar Cuenta</button>
+        <div class="form-group">
+          <label>Nueva Contraseña *</label>
+          <input type="password" id="cfg-pass-nueva" placeholder="Mínimo 6 caracteres" />
+        </div>
+        <div class="form-group">
+          <label>Confirmar Nueva Contraseña *</label>
+          <input type="password" id="cfg-pass-confirmar" placeholder="Repite la nueva contraseña" />
+        </div>
+        <button class="btn-primary-gold" onclick="cambiarContrasena()" id="btn-cambiar-pass">
+          <i class="fas fa-save" style="margin-right:8px"></i>Cambiar Contraseña
+        </button>
       </div>
 
       <div class="ef-card-3 settings-pane" id="pane-privacy" style="display:none">
@@ -180,12 +177,96 @@
 </script>
 
 <script>
-document.querySelectorAll('#settingsTabs button').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('#settingsTabs button').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
-  document.querySelectorAll('.settings-pane').forEach(p=>p.style.display='none');
-  document.getElementById('pane-'+b.dataset.tab).style.display='';
-}));
+  // Tabs
+  document.querySelectorAll('#settingsTabs button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#settingsTabs button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.querySelectorAll('.settings-pane').forEach(p=>p.style.display='none');
+    document.getElementById('pane-'+b.dataset.tab).style.display='';
+  }));
+
+  // Cargar datos reales del usuario
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) return;
+
+    const nombre = user.displayName || user.email.split('@')[0];
+    const iniciales = nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+    document.getElementById('cfg-avatar').textContent = iniciales;
+    document.getElementById('cfg-nombre').textContent = nombre;
+    document.getElementById('cfg-email').textContent = user.email;
+    document.getElementById('cfg-input-nombre').value = nombre;
+    document.getElementById('cfg-input-email').value = user.email;
+
+    // Cargar rol desde Firestore
+    try {
+      const userDoc = await firebase.firestore().collection('usuarios').doc(user.uid).get();
+      if (userDoc.exists) {
+        const rol = userDoc.data().rol || 'estudiante';
+        document.getElementById('cfg-input-rol').value = rol.charAt(0).toUpperCase() + rol.slice(1);
+      } else {
+        document.getElementById('cfg-input-rol').value = 'Estudiante';
+      }
+    } catch (e) {
+      document.getElementById('cfg-input-rol').value = 'Estudiante';
+    }
+  });
+
+  // Cambiar contraseña con Firebase Auth
+  async function cambiarContrasena() {
+    const actual = document.getElementById('cfg-pass-actual').value.trim();
+    const nueva = document.getElementById('cfg-pass-nueva').value.trim();
+    const confirmar = document.getElementById('cfg-pass-confirmar').value.trim();
+    const btn = document.getElementById('btn-cambiar-pass');
+
+    if (!actual || !nueva || !confirmar) {
+      efToast('Completa todos los campos', 'error');
+      return;
+    }
+    if (nueva.length < 6) {
+      efToast('La contraseña debe tener al menos 6 caracteres', 'error');
+      return;
+    }
+    if (nueva !== confirmar) {
+      efToast('Las contraseñas no coinciden', 'error');
+      return;
+    }
+    if (actual === nueva) {
+      efToast('La nueva contraseña debe ser diferente a la actual', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px"></i>Cambiando...';
+
+    try {
+      const user = firebase.auth().currentUser;
+      // Re-autenticar con la contraseña actual
+      const credential = firebase.auth.EmailAuthProvider.credential(user.email, actual);
+      await user.reauthenticateWithCredential(credential);
+      // Cambiar contraseña
+      await user.updatePassword(nueva);
+
+      efToast('Contraseña cambiada exitosamente', 'success');
+      document.getElementById('cfg-pass-actual').value = '';
+      document.getElementById('cfg-pass-nueva').value = '';
+      document.getElementById('cfg-pass-confirmar').value = '';
+    } catch (error) {
+      console.error('Error cambiando contraseña:', error);
+      if (error.code === 'auth/wrong-password') {
+        efToast('La contraseña actual es incorrecta', 'error');
+      } else if (error.code === 'auth/weak-password') {
+        efToast('La contraseña es muy débil, usa al menos 6 caracteres', 'error');
+      } else if (error.code === 'auth/too-many-requests') {
+        efToast('Demasiados intentos. Intenta más tarde', 'error');
+      } else {
+        efToast('Error al cambiar contraseña: ' + error.message, 'error');
+      }
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-save" style="margin-right:8px"></i>Cambiar Contraseña';
+    }
+  }
 </script>
 
 </body></html>

@@ -200,7 +200,7 @@ async function logout() {
 // Verificar si el usuario necesita estar logueado para ver la página
 function checkAuthRequired() {
   if (!auth) return;
-  const authRequiredPages = ['wallet.html', 'miProgreso.html', 'configuracion.html', '/html/wallet.html', '/html/miProgreso.html', '/html/configuracion.html'];
+  const authRequiredPages = ['wallet.html', 'miProgreso.html', '/html/wallet.html', '/html/miProgreso.html'];
   const currentPage = window.location.pathname.split('/').pop();
   
   if (authRequiredPages.includes(currentPage)) {
