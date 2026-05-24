@@ -129,10 +129,9 @@
   document.querySelectorAll('.ef-modal-backdrop').forEach(b => b.addEventListener('click', e => { if(e.target===b) b.classList.remove('show'); }));
 </script>
 
+<script src="../js/config.js"></script>
 <script>
 // ========== CONFIGURACIÓN DE GEMINI ==========
-// IMPORTANTE: Reemplaza esta API key con la tuya de https://aistudio.google.com/apikey
-const GEMINI_API_KEY = 'AIzaSyBAp8-d5Hs_YOG3GeJWPHsNOkVfBU069mg';
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
