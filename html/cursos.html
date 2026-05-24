@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cursos — EduFinanzas</title>
-  <link rel="icon" href="../img/EduFinanzas.png" />
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -61,89 +61,26 @@
   </section>
 
   <section class="section-block" id="cursos">
-    <div class="section-label reveal">Cursos Gratuitos</div>
-    <h2 class="section-title reveal">Comienza tu viaje financiero</h2>
-    <p class="section-desc reveal">Explora nuestros cursos gratuitos para adquirir conocimientos financieros básicos antes de avanzar a programas más especializados.</p>
+    <div class="section-label reveal">Cursos Disponibles</div>
+    <h2 class="section-title reveal">Cursos para ti</h2>
+    <p class="section-desc reveal">Cursos creados por expertos de nuestra comunidad. Inscríbete y aprende a tu ritmo.</p>
 
-    <div class="grid-3">
-      <div class="ef-card reveal reveal-delay-1">
-        <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
-        <span class="badge-green">Gratis</span>
-        <h3 style="margin-top:14px">Fundamentos Financieros</h3>
-        <p>Aprende los conceptos básicos de las finanzas personales y la importancia del ahorro.</p>
-        <ul class="ef-list" style="margin:16px 0">
-          <li><i class="fas fa-check"></i>5 lecciones introductorias</li>
-          <li><i class="fas fa-clock"></i>2 horas de contenido</li>
-          <li><i class="fas fa-download"></i>Recursos descargables</li>
-        </ul>
-        <a href="registro-modulos.html" class="btn-primary-gold" style="width:100%;justify-content:center">Comenzar Gratis</a>
-      </div>
-      <div class="ef-card reveal reveal-delay-2">
-        <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
-        <span class="badge-green">Gratis</span>
-        <h3 style="margin-top:14px">Presupuesto Básico</h3>
-        <p>Descubre cómo crear y mantener un presupuesto efectivo para tus finanzas personales.</p>
-        <ul class="ef-list" style="margin:16px 0">
-          <li><i class="fas fa-check"></i>4 lecciones prácticas</li>
-          <li><i class="fas fa-clock"></i>1.5 horas de contenido</li>
-          <li><i class="fas fa-file-alt"></i>Plantilla de presupuesto</li>
-        </ul>
-        <a href="registro-modulos.html" class="btn-primary-gold" style="width:100%;justify-content:center">Comenzar Gratis</a>
-      </div>
-      <div class="ef-card reveal reveal-delay-3">
-        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-        <span class="badge-green">Gratis</span>
-        <h3 style="margin-top:14px">Introducción a la Inversión</h3>
-        <p>Conoce los conceptos básicos de la inversión y los diferentes tipos de activos financieros.</p>
-        <ul class="ef-list" style="margin:16px 0">
-          <li><i class="fas fa-check"></i>6 lecciones fundamentales</li>
-          <li><i class="fas fa-clock"></i>3 horas de contenido</li>
-          <li><i class="fas fa-book"></i>Glosario de términos</li>
-        </ul>
-        <a href="registro-modulos.html" class="btn-primary-gold" style="width:100%;justify-content:center">Comenzar Gratis</a>
-      </div>
+    <div class="grid-3" id="cursos-no-inscritos-grid">
+      <div style="grid-column:1/-1;padding:32px;text-align:center;color:var(--text-muted)"><i class="fas fa-circle-notch fa-spin"></i> Cargando cursos...</div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px" class="reveal">
+      <a href="miscursos.html" class="btn-ghost">Ver mis cursos <i class="fas fa-arrow-right"></i></a>
     </div>
   </section>
 
-  <section class="section-block">
-    <div class="section-label reveal">Programas Premium</div>
-    <h2 class="section-title reveal">Diseñados para tu éxito</h2>
-    <p class="section-desc reveal">Elige entre nuestra selección de cursos especializados con instructores expertos.</p>
-
-    <div class="grid-3">
-      <div class="ef-card reveal reveal-delay-1">
-        <span class="badge-blue">Intermedio</span>
-        <h3 style="margin-top:14px">Inversiones Básicas</h3>
-        <p>Aprende a evaluar acciones, bonos y fondos. Construye tu primer portafolio diversificado.</p>
-        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.82rem;color:var(--text-muted)">
-          <span><i class="fas fa-clock" style="margin-right:6px"></i>10h</span>
-          <span><i class="fas fa-user" style="margin-right:6px"></i>2,340</span>
-        </div>
-        <a href="registro-modulos.html" class="btn-ghost" style="width:100%;justify-content:center;margin-top:16px">Ver Curso</a>
-      </div>
-      <div class="ef-card reveal reveal-delay-2">
-        <span class="badge-gold">Avanzado</span>
-        <h3 style="margin-top:14px">Trading Avanzado</h3>
-        <p>Análisis técnico, patrones de velas, indicadores y estrategias de gestión de riesgo.</p>
-        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.82rem;color:var(--text-muted)">
-          <span><i class="fas fa-clock" style="margin-right:6px"></i>8h 45min</span>
-          <span><i class="fas fa-user" style="margin-right:6px"></i>1,890</span>
-        </div>
-        <a href="registro-modulos.html" class="btn-ghost" style="width:100%;justify-content:center;margin-top:16px">Ver Curso</a>
-      </div>
-      <div class="ef-card reveal reveal-delay-3">
-        <span class="badge-blue">Intermedio</span>
-        <h3 style="margin-top:14px">Análisis Fundamental</h3>
-        <p>Aprende a evaluar el valor intrínseco de las empresas y tomar decisiones informadas.</p>
-        <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:0.82rem;color:var(--text-muted)">
-          <span><i class="fas fa-clock" style="margin-right:6px"></i>6h</span>
-          <span><i class="fas fa-user" style="margin-right:6px"></i>1,420</span>
-        </div>
-        <a href="registro-modulos.html" class="btn-ghost" style="width:100%;justify-content:center;margin-top:16px">Ver Curso</a>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:32px" class="reveal">
-      <a href="miscursos.html" class="btn-ghost">Ver mis cursos <i class="fas fa-arrow-right"></i></a>
+  <!-- Mis Cursos Inscritos -->
+  <section class="section-block" id="cursos-comunidad">
+    <div id="mis-inscripciones-container" style="display:none">
+      <div class="section-label">Mis Inscripciones</div>
+      <h2 class="section-title" style="margin-bottom:8px">Cursos en los que estás inscrito</h2>
+      <p class="section-desc" style="margin-bottom:24px">Continúa aprendiendo donde lo dejaste.</p>
+      <div class="grid-3" id="mis-inscripciones-grid"></div>
     </div>
   </section>
 </main>
@@ -218,6 +155,119 @@
   window.efModalOpen = id => document.getElementById(id)?.classList.add('show');
   window.efModalClose = id => document.getElementById(id)?.classList.remove('show');
   document.querySelectorAll('.ef-modal-backdrop').forEach(b => b.addEventListener('click', e => { if(e.target===b) b.classList.remove('show'); }));
+
+  // ========== CARGAR CURSOS DE LA COMUNIDAD ==========
+  function cargarCursosComunidadPage() {
+    const interval = setInterval(() => {
+      if (typeof firebase === 'undefined' || !firebase.firestore) return;
+      clearInterval(interval);
+
+      const fireDb = firebase.firestore();
+
+      firebase.auth().onAuthStateChanged(async (user) => {
+        const currentUid = user ? user.uid : null;
+
+        try {
+          const snapshot = await fireDb.collection('cursos_comunidad').where('activo', '==', true).get();
+
+          const inscritos = [];
+          const disponibles = [];
+
+          snapshot.forEach(doc => {
+            const curso = { id: doc.id, ...doc.data() };
+            const yaInscrito = currentUid && curso.inscripciones?.some(i => i.estudianteId === currentUid);
+            const esMio = currentUid && curso.profesorId === currentUid;
+
+            if (yaInscrito) {
+              inscritos.push(curso);
+            } else if (!esMio) {
+              disponibles.push(curso);
+            }
+          });
+
+          // ===== SECCIÓN 1: Cursos NO inscritos =====
+          const noInscGrid = document.getElementById('cursos-no-inscritos-grid');
+          if (noInscGrid) {
+            if (disponibles.length === 0) {
+              noInscGrid.innerHTML = `
+                <div style="grid-column:1/-1;padding:48px;text-align:center;color:var(--text-muted);background:var(--dark-3);border-radius:16px;border:1px solid rgba(255,255,255,0.05)">
+                  <div style="font-size:3rem;margin-bottom:16px;opacity:0.4"><i class="fas fa-check-circle"></i></div>
+                  <p style="font-size:1rem;margin-bottom:8px">¡Ya estás inscrito en todos los cursos!</p>
+                  <p style="font-size:0.85rem">Visita la comunidad para descubrir nuevos cursos cuando se publiquen.</p>
+                  <a href="comunidad.html" class="btn-primary-gold" style="margin-top:20px;display:inline-flex"><i class="fas fa-users" style="margin-right:8px"></i>Ir a la Comunidad</a>
+                </div>`;
+            } else {
+              noInscGrid.innerHTML = '';
+              disponibles.forEach(curso => {
+                const esPago = curso.tipo === 'paga' && curso.precio > 0;
+                const precioTxt = esPago ? '$' + curso.precio.toLocaleString('es-CO') : 'Gratis';
+                const hayCupos = curso.cuposOcupados < curso.cuposMaximos;
+                const card = document.createElement('div');
+                card.className = 'ef-card';
+                card.style.opacity = '1';
+                card.innerHTML = `
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <span class="badge-${esPago ? 'gold' : 'green'}">${curso.categoria}</span>
+                    <span style="font-size:0.9rem;font-weight:700;color:${esPago ? 'var(--gold)' : 'var(--green)'}">${precioTxt}</span>
+                  </div>
+                  <h3 style="margin-top:14px">${curso.titulo}</h3>
+                  <p>${curso.descripcion.substring(0, 100)}...</p>
+                  <div style="display:flex;gap:12px;margin:12px 0;font-size:0.8rem;color:var(--text-muted)">
+                    <span><i class="fas fa-signal"></i> ${curso.nivel}</span>
+                    <span><i class="fas fa-clock"></i> ${curso.duracion || 'Flexible'}</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                    <span style="font-size:0.85rem"><i class="fas fa-chalkboard-teacher"></i> ${curso.profesorNombre}</span>
+                    <span style="font-size:0.8rem;color:var(--text-muted)">${curso.cuposOcupados}/${curso.cuposMaximos}</span>
+                  </div>
+                  ${hayCupos
+                    ? `<a href="comunidad.html" class="btn-primary-gold" style="width:100%;justify-content:center"><i class="fas fa-user-plus" style="margin-right:8px"></i>${esPago ? 'Comprar' : 'Inscribirme'}</a>`
+                    : '<button class="btn-ghost" disabled style="width:100%"><i class="fas fa-times"></i> Sin cupos</button>'}
+                `;
+                noInscGrid.appendChild(card);
+              });
+            }
+          }
+
+          // ===== SECCIÓN 2: Cursos inscritos =====
+          const inscGrid = document.getElementById('mis-inscripciones-grid');
+          const inscContainer = document.getElementById('mis-inscripciones-container');
+          if (inscritos.length > 0 && inscGrid && inscContainer) {
+            inscContainer.style.display = 'block';
+            inscGrid.innerHTML = '';
+            inscritos.forEach(curso => {
+              const esPago = curso.tipo === 'paga' && curso.precio > 0;
+              const card = document.createElement('div');
+              card.className = 'ef-card';
+              card.style.opacity = '1';
+              card.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span class="badge-green"><i class="fas fa-check-circle"></i> Inscrito</span>
+                  ${esPago ? `<span style="font-size:0.8rem;color:var(--text-muted)">Pagado</span>` : ''}
+                </div>
+                <h3 style="margin-top:14px">${curso.titulo}</h3>
+                <p>${curso.descripcion.substring(0, 100)}...</p>
+                <div style="display:flex;gap:12px;margin:12px 0;font-size:0.8rem;color:var(--text-muted)">
+                  <span><i class="fas fa-signal"></i> ${curso.nivel}</span>
+                  <span><i class="fas fa-clock"></i> ${curso.duracion || 'Flexible'}</span>
+                </div>
+                <div style="font-size:0.85rem;margin-bottom:12px"><i class="fas fa-chalkboard-teacher" style="margin-right:6px"></i>${curso.profesorNombre}</div>
+                <a href="modulos.html" class="btn-primary-gold" style="width:100%;justify-content:center"><i class="fas fa-play" style="margin-right:8px"></i>Continuar Curso</a>
+              `;
+              inscGrid.appendChild(card);
+            });
+          }
+
+        } catch (error) {
+          console.error('Error cargando cursos comunidad:', error);
+          const grid = document.getElementById('cursos-no-inscritos-grid');
+          if (grid) grid.innerHTML = '<div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--text-muted)">Error al cargar cursos</div>';
+        }
+      });
+    }, 200);
+  }
+
+  cargarCursosComunidadPage();
 </script>
 
 </body></html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mi Wallet — EduFinanzas</title>
-  <link rel="icon" href="../img/EduFinanzas.png" />
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -112,29 +112,9 @@
   <section class="section-block">
     <div class="section-label reveal">Tu ruta de aprendizaje</div>
     <h2 class="section-title reveal">Cursos relacionados</h2>
-    <div class="grid-3" style="margin-top:24px">
-      <div class="ef-card reveal reveal-delay-1">
-        <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
-        <h3>Finanzas Personales</h3>
-        <p>Aprende a manejar tu wallet y crear hábitos saludables.</p>
-        <div class="progress-track"><div class="progress-fill blue" style="width:45%"></div></div>
-        <div style="font-size:0.78rem;color:var(--text-muted)">En progreso · 45%</div>
-      </div>
-      <div class="ef-card reveal reveal-delay-2">
-        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-        <h3>Inversiones para Principiantes</h3>
-        <p>Empieza a hacer crecer tu dinero con estrategias seguras.</p>
-        <div class="progress-track"><div class="progress-fill" style="width:20%"></div></div>
-        <div style="font-size:0.78rem;color:var(--text-muted)">En progreso · 20%</div>
-      </div>
-      <div class="ef-card reveal reveal-delay-3">
-        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
-        <h3>Seguridad Financiera</h3>
-        <p>Protege tus ahorros de fraudes y malas decisiones.</p>
-        <div class="progress-track"><div class="progress-fill green" style="width:0%"></div></div>
-        <div style="font-size:0.78rem;color:var(--text-muted)">No iniciado</div>
-      </div>
-    </div>
+    <div class="grid-3" id="cursosWalletGrid" style="margin-top:24px"></div>
+    <script src="../js/courses-data.js"></script>
+    <script>renderCursosWallet('cursosWalletGrid');</script>
   </section>
 </main>
 
@@ -364,9 +344,9 @@ async function cargarHistorial() {
     // Calcular totales
     let ingresos = 0, egresos = 0;
     todas.forEach(t => {
-      if (t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.destinatarioId === currentUser.uid)) {
+      if (t.tipo === 'deposito' || t.tipo === 'venta_curso' || t.tipo === 'comision_curso' || (t.tipo === 'transferencia' && t.destinatarioId === currentUser.uid)) {
         ingresos += t.monto;
-      } else if (t.tipo === 'transferencia' && t.userId === currentUser.uid) {
+      } else if (t.tipo === 'compra_curso' || (t.tipo === 'transferencia' && t.userId === currentUser.uid)) {
         egresos += t.monto;
       }
     });
@@ -388,7 +368,7 @@ async function cargarHistorial() {
     // Renderizar transacciones
     container.innerHTML = '';
     todas.forEach(t => {
-      const esIngreso = t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.destinatarioId === currentUser.uid);
+      const esIngreso = t.tipo === 'deposito' || t.tipo === 'venta_curso' || t.tipo === 'comision_curso' || (t.tipo === 'transferencia' && t.destinatarioId === currentUser.uid);
       const fecha = t.fecha?.toDate ? t.fecha.toDate() : new Date();
       const fechaStr = fecha.toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
       
@@ -397,6 +377,18 @@ async function cargarHistorial() {
         icono = 'fa-plus-circle';
         titulo = 'Depósito';
         descripcion = t.concepto || 'Fondos agregados';
+      } else if (t.tipo === 'compra_curso') {
+        icono = 'fa-graduation-cap';
+        titulo = 'Compra de curso';
+        descripcion = t.concepto || 'Pago por curso';
+      } else if (t.tipo === 'venta_curso') {
+        icono = 'fa-chalkboard-teacher';
+        titulo = 'Venta de curso';
+        descripcion = t.concepto || 'Ingreso por venta de curso';
+      } else if (t.tipo === 'comision_curso') {
+        icono = 'fa-percentage';
+        titulo = 'Comisión de plataforma';
+        descripcion = t.concepto || 'Comisión por venta';
       } else if (t.tipo === 'transferencia' && t.userId === currentUser.uid) {
         icono = 'fa-paper-plane';
         titulo = `Transferencia a ${t.destinatarioEmail}`;

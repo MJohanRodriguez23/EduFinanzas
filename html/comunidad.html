@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Comunidad — EduFinanzas</title>
-  <link rel="icon" href="../img/EduFinanzas.png" />
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -265,6 +265,24 @@
             <input type="number" id="curso-cupos" placeholder="Ej: 20" class="ef-input" min="1" max="100" />
           </div>
         </div>
+        <div class="form-group" style="margin-top:16px">
+          <label>Tipo de curso *</label>
+          <div style="display:flex;gap:12px;margin-top:8px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);flex:1;font-size:0.9rem" id="label-gratis">
+              <input type="radio" name="curso-tipo" value="gratis" checked onchange="document.getElementById('campo-precio').style.display='none';document.getElementById('label-gratis').style.borderColor='rgba(201,168,76,0.5)';document.getElementById('label-paga').style.borderColor='rgba(255,255,255,0.1)'"> 
+              <i class="fas fa-gift" style="color:var(--green)"></i> Gratis
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);flex:1;font-size:0.9rem" id="label-paga">
+              <input type="radio" name="curso-tipo" value="paga" onchange="document.getElementById('campo-precio').style.display='block';document.getElementById('label-paga').style.borderColor='rgba(201,168,76,0.5)';document.getElementById('label-gratis').style.borderColor='rgba(255,255,255,0.1)'"> 
+              <i class="fas fa-coins" style="color:var(--gold)"></i> De paga
+            </label>
+          </div>
+        </div>
+        <div class="form-group" id="campo-precio" style="display:none;margin-top:12px">
+          <label>Precio del curso (COP) *</label>
+          <input type="number" id="curso-precio" placeholder="Ej: 50000" class="ef-input" min="1000" step="1000" />
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px"><i class="fas fa-info-circle"></i> La plataforma retiene el 30% como comisión. Recibirás el 70% por cada venta.</p>
+        </div>
       </div>
       <div class="ef-modal-actions">
         <button class="btn-ghost" onclick="efModalClose('modalCrearCurso')">Cancelar</button>
@@ -291,7 +309,7 @@
       </div>
       <div class="ef-modal-actions">
         <button class="btn-ghost" onclick="efModalClose('modalInscripcionCurso')">Cancelar</button>
-        <button class="btn-primary-gold" onclick="confirmarInscripcion()">Confirmar Inscripción <i class="fas fa-check"></i></button>
+        <button class="btn-primary-gold" id="btn-confirmar-inscripcion" onclick="confirmarInscripcion()">Confirmar Inscripción <i class="fas fa-check"></i></button>
       </div>
     </div>
   </div>
@@ -596,6 +614,11 @@
     document.getElementById('curso-nivel').value = '';
     document.getElementById('curso-duracion').value = '';
     document.getElementById('curso-cupos').value = '';
+    document.querySelector('input[name="curso-tipo"][value="gratis"]').checked = true;
+    document.getElementById('campo-precio').style.display = 'none';
+    document.getElementById('curso-precio').value = '';
+    document.getElementById('label-gratis').style.borderColor = 'rgba(201,168,76,0.5)';
+    document.getElementById('label-paga').style.borderColor = 'rgba(255,255,255,0.1)';
     efModalOpen('modalCrearCurso');
   }
 
@@ -610,9 +633,16 @@
     const nivel = document.getElementById('curso-nivel').value;
     const duracion = document.getElementById('curso-duracion').value.trim();
     const cupos = parseInt(document.getElementById('curso-cupos').value) || 20;
+    const tipoCurso = document.querySelector('input[name="curso-tipo"]:checked')?.value || 'gratis';
+    const precio = tipoCurso === 'paga' ? parseFloat(document.getElementById('curso-precio').value) : 0;
 
     if (!titulo || !descripcion || !categoria || !nivel) {
       efToast('Completa todos los campos obligatorios', 'error');
+      return;
+    }
+
+    if (tipoCurso === 'paga' && (!precio || precio < 1000)) {
+      efToast('El precio mínimo es $1.000 COP', 'error');
       return;
     }
 
@@ -644,7 +674,10 @@
         profesorEmail: currentUser.email,
         fechaCreacion: firebase.firestore.FieldValue.serverTimestamp(),
         activo: true,
-        inscripciones: []
+        inscripciones: [],
+        tipo: tipoCurso,
+        precio: precio,
+        comisionPlataforma: 30
       };
 
       await db.collection('cursos_comunidad').add(cursoData);
@@ -707,8 +740,13 @@
         const curso = doc.data();
         const card = document.createElement('div');
         card.className = 'curso-card';
+        const esPago = curso.tipo === 'paga' && curso.precio > 0;
+        const precioTxt = esPago ? '$' + curso.precio.toLocaleString('es-CO') : 'Gratis';
         card.innerHTML = `
-          <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+            <span style="font-size:0.85rem;font-weight:700;color:${esPago ? 'var(--gold)' : 'var(--green)'}">${precioTxt}</span>
+          </div>
           <h4 style="margin-top:12px;margin-bottom:8px">${curso.titulo}</h4>
           <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">${curso.descripcion.substring(0, 100)}...</p>
           <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.85rem">
@@ -779,7 +817,10 @@
       const card = document.createElement('div');
       card.className = 'curso-card';
       card.innerHTML = `
-        <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+          <span style="font-size:0.85rem;font-weight:700;color:var(--green)">Gratis</span>
+        </div>
         <h4 style="margin-top:12px;margin-bottom:8px">${curso.titulo}</h4>
         <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">${curso.descripcion.substring(0, 120)}...</p>
         <div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.8rem;color:var(--text-muted)">
@@ -833,11 +874,16 @@
         const hayCupos = curso.cuposOcupados < curso.cuposMaximos;
         const esMiCurso = currentUser && curso.profesorId === currentUser.uid;
         const yaInscrito = currentUser && curso.inscripciones?.some(i => i.estudianteId === currentUser.uid);
+        const esPago = curso.tipo === 'paga' && curso.precio > 0;
+        const precioFormateado = esPago ? '$' + curso.precio.toLocaleString('es-CO') : 'Gratis';
         
         const card = document.createElement('div');
         card.className = 'curso-card';
         card.innerHTML = `
-          <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="curso-categoria cat-${curso.categoria}">${curso.categoria}</span>
+            <span style="font-size:0.85rem;font-weight:700;color:${esPago ? 'var(--gold)' : 'var(--green)'}">${precioFormateado}</span>
+          </div>
           <h4 style="margin-top:12px;margin-bottom:8px">${curso.titulo}</h4>
           <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">${curso.descripcion.substring(0, 120)}...</p>
           <div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.8rem;color:var(--text-muted)">
@@ -853,8 +899,8 @@
             yaInscrito ? 
             '<button class="btn-ghost" disabled style="width:100%"><i class="fas fa-check"></i> Ya inscrito</button>' :
             hayCupos ?
-            `<button class="btn-primary-gold" style="width:100%" onclick="abrirInscripcion('${doc.id}', '${curso.titulo}', '${curso.profesorNombre}', '${curso.profesorId}')">
-              <i class="fas fa-user-plus"></i> Inscribirme
+            `<button class="btn-primary-gold" style="width:100%" onclick="abrirInscripcion('${doc.id}', '${curso.titulo.replace(/'/g, "\\'")}', '${curso.profesorNombre.replace(/'/g, "\\'")}', '${curso.profesorId}', ${curso.precio || 0}, '${curso.tipo || 'gratis'}')">
+              <i class="fas fa-user-plus"></i> ${esPago ? 'Comprar Curso' : 'Inscribirme'}
             </button>` :
             '<button class="btn-ghost" disabled style="width:100%"><i class="fas fa-times"></i> Sin cupos</button>'
           }
@@ -867,7 +913,14 @@
     }
   }
 
-  function abrirInscripcion(cursoId, titulo, profesor, profesorId) {
+  const PLATAFORMA_EMAIL = 'edufinanzas@gmail.com';
+
+  let cursoPrecio = 0;
+  let cursoTipo = 'gratis';
+  let cursoProfesorId = null;
+  let cursoTitulo = '';
+
+  function abrirInscripcion(cursoId, titulo, profesor, profesorId, precio, tipo) {
     if (!currentUser) {
       efToast('Debes iniciar sesión para inscribirte', 'error');
       setTimeout(() => window.location.href = 'login.html', 1500);
@@ -879,10 +932,41 @@
     }
     
     cursoSeleccionado = cursoId;
+    cursoPrecio = precio || 0;
+    cursoTipo = tipo || 'gratis';
+    cursoProfesorId = profesorId;
+    cursoTitulo = titulo;
+
+    const esPago = cursoTipo === 'paga' && cursoPrecio > 0;
+    const precioFormateado = '$' + cursoPrecio.toLocaleString('es-CO');
+    const comision = Math.round(cursoPrecio * 0.30);
+    const pagoProfesor = cursoPrecio - comision;
+
     document.getElementById('info-curso-inscripcion').innerHTML = `
       <h4 style="margin-bottom:8px">${titulo}</h4>
       <p style="color:var(--text-muted);font-size:0.9rem"><i class="fas fa-chalkboard-teacher"></i> Impartido por: ${profesor}</p>
+      ${esPago ? `
+        <div style="margin-top:16px;padding:16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:0.9rem;color:var(--text-muted)">Precio del curso:</span>
+            <span style="font-size:1.1rem;font-weight:700;color:var(--gold)">${precioFormateado}</span>
+          </div>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin:0"><i class="fas fa-wallet"></i> Se descontará de tu wallet al confirmar</p>
+        </div>
+      ` : `
+        <div style="margin-top:12px">
+          <span class="badge-green"><i class="fas fa-gift"></i> Curso Gratis</span>
+        </div>
+      `}
     `;
+
+    const btnConfirmar = document.getElementById('btn-confirmar-inscripcion');
+    if (btnConfirmar) {
+      btnConfirmar.innerHTML = esPago 
+        ? `<i class="fas fa-wallet"></i> Pagar ${precioFormateado} e Inscribirme` 
+        : 'Confirmar Inscripción <i class="fas fa-check"></i>';
+    }
+
     document.getElementById('inscripcion-mensaje').value = '';
     efModalOpen('modalInscripcionCurso');
   }
@@ -892,39 +976,181 @@
     if (!cursoSeleccionado || !currentUser) return;
 
     const mensaje = document.getElementById('inscripcion-mensaje').value.trim();
+    const esPago = cursoTipo === 'paga' && cursoPrecio > 0;
     
+    // Si es curso de paga, verificar saldo y buscar wallet de la plataforma
+    let plataformaWalletId = null;
+    if (esPago) {
+      try {
+        const walletDoc = await db.collection('wallets').doc(currentUser.uid).get();
+        const saldo = walletDoc.exists ? (walletDoc.data().saldo || 0) : 0;
+        
+        if (saldo < cursoPrecio) {
+          efToast(`Saldo insuficiente. Necesitas $${cursoPrecio.toLocaleString('es-CO')} y tienes $${saldo.toLocaleString('es-CO')}`, 'error');
+          return;
+        }
+
+        // Buscar wallet de la plataforma por email
+        const plataformaSnap = await db.collection('wallets').where('email', '==', PLATAFORMA_EMAIL).get();
+        if (!plataformaSnap.empty) {
+          plataformaWalletId = plataformaSnap.docs[0].id;
+        }
+      } catch (error) {
+        console.error('Error verificando saldo:', error);
+        efToast('Error al verificar tu saldo', 'error');
+        return;
+      }
+    }
+
     const inscripcionData = {
       estudianteId: currentUser.uid,
       estudianteEmail: currentUser.email,
       estudianteNombre: currentUser.displayName || currentUser.email.split('@')[0],
       mensaje: mensaje,
       fechaInscripcion: firebase.firestore.Timestamp.now(),
-      estado: 'pendiente' // pendiente, aceptado, rechazado
+      estado: esPago ? 'aceptado' : 'pendiente',
+      montoPagado: esPago ? cursoPrecio : 0
     };
 
     try {
       const cursoRef = db.collection('cursos_comunidad').doc(cursoSeleccionado);
       
       await db.runTransaction(async (transaction) => {
+        // ===== PASO 1: TODOS LOS READS PRIMERO =====
         const cursoDoc = await transaction.get(cursoRef);
         const cursoData = cursoDoc.data();
-        
+
+        let walletEstDoc = null, walletProfDoc = null, walletPlatDoc = null;
+        const walletEstRef = db.collection('wallets').doc(currentUser.uid);
+
+        if (esPago) {
+          walletEstDoc = await transaction.get(walletEstRef);
+
+          const profesorId = cursoData.profesorId;
+          const walletProfRef = db.collection('wallets').doc(profesorId);
+          walletProfDoc = await transaction.get(walletProfRef);
+
+          if (plataformaWalletId) {
+            const walletPlatRef = db.collection('wallets').doc(plataformaWalletId);
+            walletPlatDoc = await transaction.get(walletPlatRef);
+          }
+        }
+
+        // ===== PASO 2: VALIDACIONES =====
         if (cursoData.cuposOcupados >= cursoData.cuposMaximos) {
           throw new Error('No hay cupos disponibles');
         }
-        
         if (cursoData.inscripciones?.some(i => i.estudianteId === currentUser.uid)) {
           throw new Error('Ya estás inscrito en este curso');
         }
-        
+        if (esPago) {
+          const saldoEstudiante = walletEstDoc.exists ? (walletEstDoc.data().saldo || 0) : 0;
+          if (saldoEstudiante < cursoPrecio) {
+            throw new Error('Saldo insuficiente');
+          }
+        }
+
+        // ===== PASO 3: TODOS LOS WRITES DESPUÉS =====
         transaction.update(cursoRef, {
           inscripciones: firebase.firestore.FieldValue.arrayUnion(inscripcionData),
           cuposOcupados: firebase.firestore.FieldValue.increment(1)
         });
+
+        if (esPago) {
+          const comision = Math.round(cursoPrecio * 0.30);
+          const pagoProfesor = cursoPrecio - comision;
+          const profesorId = cursoData.profesorId;
+
+          // Descontar del wallet del estudiante
+          transaction.update(walletEstRef, {
+            saldo: firebase.firestore.FieldValue.increment(-cursoPrecio)
+          });
+
+          // Acreditar al wallet del profesor (70%)
+          const walletProfRef = db.collection('wallets').doc(profesorId);
+          if (walletProfDoc.exists) {
+            transaction.update(walletProfRef, {
+              saldo: firebase.firestore.FieldValue.increment(pagoProfesor)
+            });
+          } else {
+            transaction.set(walletProfRef, {
+              saldo: pagoProfesor,
+              userId: profesorId,
+              email: cursoData.profesorEmail,
+              nombre: cursoData.profesorNombre,
+              fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }
+
+          // Acreditar comisión (30%) al wallet de EduFinanzas
+          if (plataformaWalletId) {
+            const walletPlatRef = db.collection('wallets').doc(plataformaWalletId);
+            if (walletPlatDoc && walletPlatDoc.exists) {
+              transaction.update(walletPlatRef, {
+                saldo: firebase.firestore.FieldValue.increment(comision)
+              });
+            } else {
+              transaction.set(walletPlatRef, {
+                saldo: comision,
+                email: PLATAFORMA_EMAIL,
+                nombre: 'EduFinanzas',
+                fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
+              });
+            }
+          }
+        }
       });
 
+      // Si es de paga, registrar las transacciones (fuera de la transacción principal)
+      if (esPago) {
+        const comision = Math.round(cursoPrecio * 0.30);
+        const pagoProfesor = cursoPrecio - comision;
+        const ahora = firebase.firestore.Timestamp.now();
+
+        // Transacción del estudiante (pago del curso)
+        await db.collection('transacciones').add({
+          userId: currentUser.uid,
+          userEmail: currentUser.email,
+          tipo: 'compra_curso',
+          monto: cursoPrecio,
+          concepto: `Compra de curso: ${cursoTitulo}`,
+          cursoId: cursoSeleccionado,
+          fecha: ahora
+        });
+
+        // Transacción del profesor (recibe pago)
+        await db.collection('transacciones').add({
+          userId: cursoProfesorId,
+          tipo: 'venta_curso',
+          monto: pagoProfesor,
+          concepto: `Venta de curso: ${cursoTitulo} (70%)`,
+          cursoId: cursoSeleccionado,
+          estudianteId: currentUser.uid,
+          fecha: ahora
+        });
+
+        // Transacción de la plataforma (comisión al wallet de EduFinanzas)
+        if (plataformaWalletId) {
+          await db.collection('transacciones').add({
+            userId: plataformaWalletId,
+            userEmail: PLATAFORMA_EMAIL,
+            tipo: 'comision_curso',
+            monto: comision,
+            concepto: `Comisión 30% - ${cursoTitulo}`,
+            cursoId: cursoSeleccionado,
+            profesorId: cursoProfesorId,
+            estudianteId: currentUser.uid,
+            fecha: ahora
+          });
+        }
+      }
+
       efModalClose('modalInscripcionCurso');
-      efToast('Inscripción enviada. El profesor debe aprobarla.', 'success');
+      if (esPago) {
+        efToast(`Pago exitoso. ¡Ya estás inscrito en el curso!`, 'success');
+      } else {
+        efToast('Inscripción enviada. El profesor debe aprobarla.', 'success');
+      }
       cargarCursosComunidad();
     } catch (error) {
       console.error('Error en inscripción:', error);
