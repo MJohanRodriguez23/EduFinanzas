@@ -1,2 +1,2 @@
-# API Keys - NO subir al repositorio
-js/config.js
+# API Keys - restringir por HTTP referrer en Google Cloud Console
+# js/config.js
