@@ -15,11 +15,6 @@ const firebaseConfig = {
 let auth = null;
 let db = null;
 
-// Detectar si estamos dentro de la carpeta html/ o en la raíz
-function _p(file) {
-  return window.location.pathname.toLowerCase().includes('/html/') ? file : 'html/' + file;
-}
-
 // Esperar a que Firebase esté listo
 document.addEventListener('DOMContentLoaded', function() {
   // Dar tiempo a que los scripts de Firebase carguen
@@ -91,15 +86,15 @@ function updateAuthUI(user) {
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="user-dropdown" id="userDropdown">
-              <a href="${_p('wallet.html')}">
+              <a href="/html/wallet.html">
                 <i class="fas fa-wallet"></i>
                 Mi Wallet
               </a>
-              <a href="${_p('miProgreso.html')}">
+              <a href="/html/miProgreso.html">
                 <i class="fas fa-chart-line"></i>
                 Mi Progreso
               </a>
-              <a href="${_p('configuracion.html')}">
+              <a href="/html/configuracion.html">
                 <i class="fas fa-cog"></i>
                 Configuración
               </a>
@@ -121,15 +116,15 @@ function updateAuthUI(user) {
             <i class="fas fa-chevron-down"></i>
           </div>
           <div class="user-dropdown" id="userDropdown">
-            <a href="${_p('wallet.html')}">
+            <a href="/html/wallet.html">
               <i class="fas fa-wallet"></i>
               Mi Wallet
             </a>
-            <a href="${_p('miProgreso.html')}">
+            <a href="/html/miProgreso.html">
               <i class="fas fa-chart-line"></i>
               Mi Progreso
             </a>
-            <a href="${_p('configuracion.html')}">
+            <a href="/html/configuracion.html">
               <i class="fas fa-cog"></i>
               Configuración
             </a>
@@ -154,7 +149,7 @@ function updateAuthUI(user) {
       // Restaurar links de login y registro
       if (authPlaceholder) {
         authPlaceholder.innerHTML = `
-          <li><a href="${_p('login.html')}" class="nav-cta">Iniciar Sesión</a></li>
+          <li><a href="login.html" class="nav-cta">Iniciar Sesión</a></li>
         `;
       }
       
@@ -189,7 +184,7 @@ async function logout() {
     await auth.signOut();
     efToast('Sesión cerrada', 'success');
     setTimeout(() => {
-      window.location.href = _p('login.html');
+      window.location.href = '/html/login.html';
     }, 1000);
   } catch (error) {
     console.error('Error al cerrar sesión:', error);
@@ -200,7 +195,7 @@ async function logout() {
 // Verificar si el usuario necesita estar logueado para ver la página
 function checkAuthRequired() {
   if (!auth) return;
-  const authRequiredPages = ['wallet.html', 'miProgreso.html', '/html/wallet.html', '/html/miProgreso.html'];
+  const authRequiredPages = ['wallet.html', 'miProgreso.html', 'configuracion.html', '/html/wallet.html', '/html/miProgreso.html', '/html/configuracion.html'];
   const currentPage = window.location.pathname.split('/').pop();
   
   if (authRequiredPages.includes(currentPage)) {
@@ -208,7 +203,7 @@ function checkAuthRequired() {
       if (!user) {
         efToast('Debes iniciar sesión para acceder a esta página', 'error');
         setTimeout(() => {
-          window.location.href = _p('login.html');
+          window.location.href = '/html/login.html';
         }, 1500);
       }
     });

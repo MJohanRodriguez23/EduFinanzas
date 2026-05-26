@@ -53,6 +53,7 @@
         <div class="avatar-circle" style="margin:0 auto 12px;width:80px;height:80px;font-size:1.5rem" id="cfg-avatar">--</div>
         <div style="font-family:'Syne',sans-serif;font-weight:700" id="cfg-nombre">Cargando...</div>
         <div style="color:var(--text-muted);font-size:0.85rem" id="cfg-email">...</div>
+        <div style="color:var(--gold);font-size:0.82rem;margin-top:6px;font-weight:600" id="cfg-rol">...</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px" id="settingsTabs">
         <button class="ef-tab active" data-tab="account" style="text-align:left;border-radius:8px;padding:12px 16px"><i class="fas fa-key" style="margin-right:8px"></i>Cuenta</button>
@@ -185,32 +186,42 @@
     document.getElementById('pane-'+b.dataset.tab).style.display='';
   }));
 
-  // Cargar datos reales del usuario
-  firebase.auth().onAuthStateChanged(async (user) => {
+  // Cargar datos reales del usuario (esperar a que Firebase esté listo)
+  function _initCfgUser() {
+    if (typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length) {
+      return setTimeout(_initCfgUser, 150);
+    }
+    firebase.auth().onAuthStateChanged(_cargarPerfilCfg);
+  }
+  _initCfgUser();
+
+  async function _cargarPerfilCfg(user) {
     if (!user) return;
 
-    const nombre = user.displayName || user.email.split('@')[0];
-    const iniciales = nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-
-    document.getElementById('cfg-avatar').textContent = iniciales;
-    document.getElementById('cfg-nombre').textContent = nombre;
-    document.getElementById('cfg-email').textContent = user.email;
-    document.getElementById('cfg-input-nombre').value = nombre;
-    document.getElementById('cfg-input-email').value = user.email;
-
-    // Cargar rol desde Firestore
     try {
-      const userDoc = await firebase.firestore().collection('usuarios').doc(user.uid).get();
-      if (userDoc.exists) {
-        const rol = userDoc.data().rol || 'estudiante';
-        document.getElementById('cfg-input-rol').value = rol.charAt(0).toUpperCase() + rol.slice(1);
-      } else {
-        document.getElementById('cfg-input-rol').value = 'Estudiante';
-      }
-    } catch (e) {
-      document.getElementById('cfg-input-rol').value = 'Estudiante';
+      const nombre = user.displayName || user.email.split('@')[0];
+      const iniciales = nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+      document.getElementById('cfg-avatar').textContent = iniciales;
+      document.getElementById('cfg-nombre').textContent = nombre;
+      document.getElementById('cfg-email').textContent = user.email;
+
+      // Cargar rol desde Firestore
+      let rolTxt = 'Estudiante';
+      try {
+        const userDoc = await firebase.firestore().collection('usuarios').doc(user.uid).get();
+        if (userDoc.exists) {
+          const rol = userDoc.data().rol || 'estudiante';
+          rolTxt = rol.charAt(0).toUpperCase() + rol.slice(1);
+        }
+      } catch (e) { /* usar default */ }
+
+      const rolEl = document.getElementById('cfg-rol');
+      if (rolEl) rolEl.textContent = rolTxt;
+    } catch (err) {
+      console.error('Error cargando perfil:', err);
     }
-  });
+  }
 
   // Cambiar contraseña con Firebase Auth
   async function cambiarContrasena() {
